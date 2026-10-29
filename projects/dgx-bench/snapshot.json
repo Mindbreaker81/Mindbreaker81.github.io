@@ -1,0 +1,12 @@
+{
+  "title": "¿Hasta dónde llega un modelo local?",
+  "url": "https://mindbreaker81.github.io/projects/dgx-bench/",
+  "source_repository": "dgx-bench",
+  "source_file": "benchmark/index.html",
+  "source_checkout_commit": "8931f229ca521cb6787247b2221792092fdcdf0c",
+  "source_html_sha256": "372a865bdbaaa2288873afb602dc02bb87e6209be569cb85b33564468acc434f",
+  "public_html_sha256": "731fd62766f3812325c48bf9cd86e0d21b9e8bc9350207dbbb1bb1310bfc1efb",
+  "exporter_sha256": "a85db359120a050e9a872e86628a421ecdf38afce1638ff80be30f7c7ceff0f4",
+  "exported_utc": "2026-10-29T08:53:26.985552+00:00",
+  "note": "Instantánea estática del informe revisado; la fecha de los datos figura en el HTML."
+}
