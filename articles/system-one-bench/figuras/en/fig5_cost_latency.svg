@@ -1,0 +1,372 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 598" width="620" height="598" role="img" aria-labelledby="ft fd" style="max-width:100%;height:auto">
+<style>
+  :root { color-scheme: light dark; }
+  svg { --ink: #20242a; --acc: #2f6fce; --acc2: #b0552f; }
+  @media (prefers-color-scheme: dark) {
+    svg { --ink: #e4e7ec; --acc: #7fa6ea; --acc2: #d98a63; }
+  }
+  text { font-family: system-ui, 'Segoe UI', sans-serif; fill: var(--ink); }
+  .mut { opacity: .68; }
+  .grid { stroke: var(--ink); stroke-opacity: .16; }
+  .axl { stroke: var(--ink); stroke-opacity: .55; }
+  .ink { stroke: var(--ink); }
+  .acc { fill: var(--acc); stroke: none; }
+  .accs { stroke: var(--acc); fill: none; }
+  .acc2 { fill: var(--acc2); }
+  .acc2s { stroke: var(--acc2); fill: none; }
+  .open { fill: none; stroke: var(--ink); }
+</style>
+<title id="ft">Figure 5 — Recorded cost and latency vs adjusted score</title>
+<desc id="fd">Recorded API cost per 1,000 records over current IDs (top) and median ms per record (bottom) vs adjusted score; log horizontal axes. Filled dot = complete coverage, open = incomplete (*). For cascades, cost is recorded API spend and latency is the per-record D1+reviewer sum; local passes carry no invoice. Medians for `jev`-adapter runs include a fixed client-side inter-request pause (0.3 s by default; 3.5 s for the Base Labs `:free` pair); `llm`-adapter runs have none. ≥ = partial or lower-bound cost; runs with no recorded API invoice are grouped in the right-hand category (a configuration count, not a record count; operating cost unmeasured). Per-configuration denominators are listed in the article's data table. 0 = majority. GT v5 · data cut v2.10.0</desc>
+<line x1="40" x2="450" y1="217.71428571428572" y2="217.71428571428572" class="grid"/>
+<text x="34.0" y="221.7" font-size="10" text-anchor="end" class="mut">-80</text>
+<line x1="40" x2="450" y1="174.28571428571428" y2="174.28571428571428" class="grid"/>
+<text x="34.0" y="178.3" font-size="10" text-anchor="end" class="mut">-40</text>
+<line x1="40" x2="450" y1="130.85714285714286" y2="130.85714285714286" class="grid"/>
+<text x="34.0" y="134.9" font-size="10" text-anchor="end" class="mut">0</text>
+<line x1="40" x2="450" y1="87.42857142857143" y2="87.42857142857143" class="grid"/>
+<text x="34.0" y="91.4" font-size="10" text-anchor="end" class="mut">40</text>
+<line x1="40" x2="450" y1="44.0" y2="44.0" class="grid"/>
+<text x="34.0" y="48.0" font-size="10" text-anchor="end" class="mut">80</text>
+<line x1="40" x2="450" y1="130.85714285714286" y2="130.85714285714286" class="ink" stroke-width="1.6"/>
+<text x="450.0" y="142.9" font-size="10" text-anchor="end" >majority (0)</text>
+<line x1="40.0" x2="40.0" y1="236" y2="241" class="axl"/>
+<text x="40.0" y="254.0" font-size="10" text-anchor="middle" class="mut">0.01</text>
+<line x1="105.20657147835387" x2="105.20657147835387" y1="236" y2="241" class="axl"/>
+<text x="105.2" y="254.0" font-size="10" text-anchor="middle" class="mut">0.03</text>
+<line x1="176.66666666666666" x2="176.66666666666666" y1="236" y2="241" class="axl"/>
+<text x="176.7" y="254.0" font-size="10" text-anchor="middle" class="mut">0.1</text>
+<line x1="241.8732381450205" x2="241.8732381450205" y1="236" y2="241" class="axl"/>
+<text x="241.9" y="254.0" font-size="10" text-anchor="middle" class="mut">0.3</text>
+<line x1="313.3333333333333" x2="313.3333333333333" y1="236" y2="241" class="axl"/>
+<text x="313.3" y="254.0" font-size="10" text-anchor="middle" class="mut">1</text>
+<line x1="378.5399048116872" x2="378.5399048116872" y1="236" y2="241" class="axl"/>
+<text x="378.5" y="254.0" font-size="10" text-anchor="middle" class="mut">3</text>
+<line x1="450.0" x2="450.0" y1="236" y2="241" class="axl"/>
+<text x="450.0" y="254.0" font-size="10" text-anchor="middle" class="mut">10</text>
+<text x="40.0" y="270.0" font-size="11" text-anchor="start" class="mut">recorded API cost per 1,000 records ($, log)</text>
+<text x="4.0" y="34.0" font-size="11" text-anchor="start" class="mut">adjusted</text>
+<rect x="163.4" y="53.8" width="7.2" height="7.2" transform="rotate(45 167.0 57.4)" class="acc" stroke-width="1.4" />
+<rect x="132.3" y="56.0" width="7.2" height="7.2" transform="rotate(45 135.9 59.6)" class="acc" stroke-width="1.4" />
+<circle cx="113.81837757991855" cy="77.3573357096266" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="113.81837757991855" cy="76.25972883499844" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="163.4" y="55.6" width="7.2" height="7.2" transform="rotate(45 167.0 59.2)" class="acc" stroke-width="1.4" />
+<circle cx="113.81837757991855" cy="76.73516663438312" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="163.4" y="56.2" width="7.2" height="7.2" transform="rotate(45 167.0 59.8)" class="acc" stroke-width="1.4" />
+<rect x="132.3" y="59.1" width="7.2" height="7.2" transform="rotate(45 135.9 62.7)" class="acc" stroke-width="1.4" />
+<rect x="478.4" y="71.0" width="7.2" height="7.2" transform="rotate(45 482.0 74.6)" class="acc" stroke-width="1.4" />
+<circle cx="487.0" cy="94.76761792708416" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="88.77148876245636" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="94.1157317018269" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="498.4" y="84.7" width="7.2" height="7.2" transform="rotate(45 502.0 88.3)" class="accs" stroke-width="1.4" fill="none" stroke="var(--acc)"/>
+<circle cx="482.0" cy="109.66144221073964" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="116.68793689550341" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="488.4" y="85.1" width="7.2" height="7.2" transform="rotate(45 492.0 88.7)" class="acc" stroke-width="1.4" />
+<rect x="493.4" y="97.2" width="7.2" height="7.2" transform="rotate(45 497.0 100.8)" class="acc" stroke-width="1.4" />
+<circle cx="502.0" cy="107.85173437838918" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="117.09258521246385" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="134.10261073475047" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="133.46765613323606" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="154.6749340460453" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="227.90683808714954" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="226.1" y="46.3" width="7.2" height="7.2" transform="rotate(45 229.7 49.9)" class="acc" stroke-width="1.4" />
+<rect x="226.1" y="48.9" width="7.2" height="7.2" transform="rotate(45 229.7 52.5)" class="acc" stroke-width="1.4" />
+<rect x="273.2" y="67.9" width="7.2" height="7.2" transform="rotate(45 276.8 71.5)" class="acc" stroke-width="1.4" />
+<rect x="273.2" y="54.4" width="7.2" height="7.2" transform="rotate(45 276.8 58.0)" class="acc" stroke-width="1.4" />
+<circle cx="215.97985344897737" cy="60.75340573832207" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="191.27948353409255" cy="62.29039320135894" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="176.59870770034848" cy="76.84765815681136" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="177.04445580561884" cy="86.74025032602913" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="179.93780830472267" cy="87.61768306767415" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="233.05840297442398" cy="59.28025922828909" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="205.29434162973902" cy="57.664762162374764" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="253.185215935114" cy="51.651659647687424" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="252.6781857092312" cy="53.20029685604721" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="285.6" y="51.9" width="7.2" height="7.2" transform="rotate(45 289.2 55.5)" class="acc" stroke-width="1.4" />
+<rect x="287.1" y="43.0" width="7.2" height="7.2" transform="rotate(45 290.7 46.6)" class="acc" stroke-width="1.4" />
+<circle cx="376.2135652151201" cy="55.69400299577345" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="352.29637382792896" cy="57.37862303178461" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="373.6" y="50.5" width="7.2" height="7.2" transform="rotate(45 377.2 54.1)" class="acc" stroke-width="1.4" />
+<rect x="373.6" y="51.2" width="7.2" height="7.2" transform="rotate(45 377.2 54.8)" class="acc" stroke-width="1.4" />
+<rect x="409.8" y="53.0" width="7.2" height="7.2" transform="rotate(45 413.4 56.6)" class="acc" stroke-width="1.4" />
+<rect x="409.8" y="50.6" width="7.2" height="7.2" transform="rotate(45 413.4 54.2)" class="acc" stroke-width="1.4" />
+<circle cx="482.0" cy="149.6860974065599" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="487.0" cy="177.37747091085458" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="285.07644193818845" cy="91.3097820413351" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="361.07029277503256" cy="65.80997765718769" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="355.1697457411069" cy="54.49155047393168" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="337.731340008819" cy="63.32097778722573" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="332.55829277445883" cy="63.80351728353645" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="392.8" y="49.8" width="7.2" height="7.2" transform="rotate(45 396.4 53.4)" class="acc" stroke-width="1.4" />
+<rect x="392.8" y="49.7" width="7.2" height="7.2" transform="rotate(45 396.4 53.3)" class="acc" stroke-width="1.4" />
+<rect x="388.7" y="47.9" width="7.2" height="7.2" transform="rotate(45 392.3 51.5)" class="acc" stroke-width="1.4" />
+<rect x="388.7" y="48.7" width="7.2" height="7.2" transform="rotate(45 392.3 52.3)" class="acc" stroke-width="1.4" />
+<circle cx="492.0" cy="77.4457019564215" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="78.76260012583904" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="74.29301048649933" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="74.51810636460145" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="74.80957328694085" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="75.8282737403809" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="58.43104029883615" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="78.15297895947995" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="58.28509830167022" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="76.55701050772379" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="62.598533573631826" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="58.51975362939992" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="62.41513986602712" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="68.26278244165448" cy="110.71771379521361" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="125.94968392122742" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="110.13477995053479" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="79.97394893603408" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="101.51576252335062" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="140.41417790358878" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="175.35535506099095" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="70.3028001927296" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="488.4" y="63.6" width="7.2" height="7.2" transform="rotate(45 492.0 67.2)" class="acc" stroke-width="1.4" />
+<circle cx="497.0" cy="111.40043585752407" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="502.0" cy="109.77366738773135" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="82.42124363405483" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="483.4" y="74.9" width="7.2" height="7.2" transform="rotate(45 487.0 78.5)" class="acc" stroke-width="1.4" />
+<circle cx="492.0" cy="74.83257698885929" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="74.63599084920835" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="132.3" y="56.6" width="7.2" height="7.2" transform="rotate(45 135.9 60.2)" class="acc" stroke-width="1.4" />
+<rect x="132.3" y="55.5" width="7.2" height="7.2" transform="rotate(45 135.9 59.1)" class="acc" stroke-width="1.4" />
+<rect x="132.3" y="56.9" width="7.2" height="7.2" transform="rotate(45 135.9 60.5)" class="acc" stroke-width="1.4" />
+<rect x="132.3" y="55.6" width="7.2" height="7.2" transform="rotate(45 135.9 59.2)" class="acc" stroke-width="1.4" />
+<circle cx="502.0" cy="77.62156392004815" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="105.09388307370116" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="487.0" cy="115.9805624095815" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="132.3" y="55.0" width="7.2" height="7.2" transform="rotate(45 135.9 58.6)" class="acc" stroke-width="1.4" />
+<circle cx="492.0" cy="141.53314849944064" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="497.0" cy="82.53139212713681" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="84.71621558167618" cy="79.46531400822548" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="83.38667154458153" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="116.5" y="58.3" width="7.2" height="7.2" transform="rotate(45 120.1 61.9)" class="acc" stroke-width="1.4" />
+<rect x="478.4" y="71.2" width="7.2" height="7.2" transform="rotate(45 482.0 74.8)" class="acc" stroke-width="1.4" />
+<rect x="483.4" y="77.4" width="7.2" height="7.2" transform="rotate(45 487.0 81.0)" class="acc" stroke-width="1.4" />
+<circle cx="78.22693343673728" cy="86.6024481806354" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="102.29273884101372" cy="85.33361857143659" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="129.86369162954452" cy="72.11176777871849" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="79.69044354039877" cy="82.27551017288513" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="192.5247658802378" cy="82.28855132606108" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="165.09549107358112" cy="96.30325781864047" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="179.04583904830073" cy="84.04204024265154" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="119.38231871798716" cy="72.99689171550483" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="204.89285518755497" cy="87.49209849173685" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="204.89285518755497" cy="90.81720467685045" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="81.12280430962883" cy="97.54530677435578" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="107.81893599142347" cy="95.51907864974848" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="62.07134811111591" cy="76.07671839797669" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="492.0" cy="74.12742934363568" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="497.0" cy="68.94248147962551" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="502.0" cy="72.70043303927866" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="482.0" cy="67.56278033343021" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<line x1="172.01165941020625" x2="172.01165941020625" y1="57.42517472842472" y2="105.42517472842472" class="axl" stroke-opacity="0.4"/>
+<text x="175.0" y="109.4" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev→Jev</text>
+<line x1="140.8663704954076" x2="140.8663704954076" y1="59.62058618234312" y2="121.62058618234312" class="axl" stroke-opacity="0.4"/>
+<text x="143.9" y="125.6" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Dec4B→Jev</text>
+<line x1="118.81837757991855" x2="118.81837757991855" y1="77.3573357096266" y2="90.3573357096266" class="axl" stroke-opacity="0.4"/>
+<text x="121.8" y="94.4" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev</text>
+<line x1="502.0" x2="511" y1="94.1157317018269" y2="128.11573170182692" class="axl" stroke-opacity="0.4"/>
+<text x="514.0" y="132.1" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Decider-4B</text>
+<line x1="181.59870770034848" x2="181.59870770034848" y1="76.84765815681136" y2="138.84765815681135" class="axl" stroke-opacity="0.4"/>
+<text x="184.6" y="142.8" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">luna-dec ≥</text>
+<line x1="258.185215935114" x2="258.185215935114" y1="51.651659647687424" y2="106.65165964768742" class="axl" stroke-opacity="0.4"/>
+<text x="261.2" y="110.7" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Haiku ≥</text>
+<line x1="295.73232202747494" x2="295.73232202747494" y1="46.63180221346013" y2="80.63180221346013" class="axl" stroke-opacity="0.4"/>
+<text x="298.7" y="84.6" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev→Haiku</text>
+<line x1="360.1697457411069" x2="360.1697457411069" y1="54.49155047393168" y2="81.49155047393168" class="axl" stroke-opacity="0.4"/>
+<text x="363.2" y="85.5" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Cerebras-Qwen</text>
+<line x1="502.0" x2="511" y1="58.51975362939992" y2="64.51975362939993" class="axl" stroke-opacity="0.4"/>
+<text x="514.0" y="68.5" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Qwen FP8</text>
+<line x1="497.0" x2="511" y1="67.17338393996545" y2="80.17338393996545" class="axl" stroke-opacity="0.4"/>
+<text x="514.0" y="84.2" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Dec4B→Clef</text>
+<line x1="502.0" x2="511" y1="74.63599084920835" y2="94.63599084920835" class="axl" stroke-opacity="0.4"/>
+<text x="514.0" y="98.6" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">DGemma</text>
+<line x1="89.71621558167618" x2="89.71621558167618" y1="79.46531400822548" y2="113.46531400822548" class="axl" stroke-opacity="0.4"/>
+<text x="92.7" y="117.5" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">MS-Dec1</text>
+<line x1="507.0" x2="511" y1="83.38667154458153" y2="110.38667154458153" class="axl" stroke-opacity="0.4"/>
+<text x="514.0" y="114.4" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Drex</text>
+<line x1="40" x2="450" y1="477.7142857142857" y2="477.7142857142857" class="grid"/>
+<text x="34.0" y="481.7" font-size="10" text-anchor="end" class="mut">-80</text>
+<line x1="40" x2="450" y1="434.2857142857143" y2="434.2857142857143" class="grid"/>
+<text x="34.0" y="438.3" font-size="10" text-anchor="end" class="mut">-40</text>
+<line x1="40" x2="450" y1="390.8571428571429" y2="390.8571428571429" class="grid"/>
+<text x="34.0" y="394.9" font-size="10" text-anchor="end" class="mut">0</text>
+<line x1="40" x2="450" y1="347.42857142857144" y2="347.42857142857144" class="grid"/>
+<text x="34.0" y="351.4" font-size="10" text-anchor="end" class="mut">40</text>
+<line x1="40" x2="450" y1="304.0" y2="304.0" class="grid"/>
+<text x="34.0" y="308.0" font-size="10" text-anchor="end" class="mut">80</text>
+<line x1="40" x2="450" y1="390.8571428571429" y2="390.8571428571429" class="ink" stroke-width="1.6"/>
+<text x="450.0" y="402.9" font-size="10" text-anchor="end" >majority (0)</text>
+<line x1="40.0" x2="40.0" y1="496" y2="501" class="axl"/>
+<text x="40.0" y="514.0" font-size="10" text-anchor="middle" class="mut">10</text>
+<line x1="88.9049286087654" x2="88.9049286087654" y1="496" y2="501" class="axl"/>
+<text x="88.9" y="514.0" font-size="10" text-anchor="middle" class="mut">30</text>
+<line x1="142.5" x2="142.5" y1="496" y2="501" class="axl"/>
+<text x="142.5" y="514.0" font-size="10" text-anchor="middle" class="mut">100</text>
+<line x1="191.40492860876543" x2="191.40492860876543" y1="496" y2="501" class="axl"/>
+<text x="191.4" y="514.0" font-size="10" text-anchor="middle" class="mut">300</text>
+<line x1="245.0" x2="245.0" y1="496" y2="501" class="axl"/>
+<text x="245.0" y="514.0" font-size="10" text-anchor="middle" class="mut">1000</text>
+<line x1="293.90492860876543" x2="293.90492860876543" y1="496" y2="501" class="axl"/>
+<text x="293.9" y="514.0" font-size="10" text-anchor="middle" class="mut">3000</text>
+<line x1="347.5" x2="347.5" y1="496" y2="501" class="axl"/>
+<text x="347.5" y="514.0" font-size="10" text-anchor="middle" class="mut">10000</text>
+<line x1="396.40492860876543" x2="396.40492860876543" y1="496" y2="501" class="axl"/>
+<text x="396.4" y="514.0" font-size="10" text-anchor="middle" class="mut">30000</text>
+<line x1="450.0" x2="450.0" y1="496" y2="501" class="axl"/>
+<text x="450.0" y="514.0" font-size="10" text-anchor="middle" class="mut">100000</text>
+<text x="40.0" y="530.0" font-size="11" text-anchor="start" class="mut">median ms per record (log)</text>
+<text x="4.0" y="294.0" font-size="11" text-anchor="start" class="mut">adjusted</text>
+<rect x="265.8" y="313.8" width="7.2" height="7.2" transform="rotate(45 269.4 317.4)" class="acc" stroke-width="1.4" />
+<rect x="247.7" y="316.0" width="7.2" height="7.2" transform="rotate(45 251.3 319.6)" class="acc" stroke-width="1.4" />
+<circle cx="224.99411956891913" cy="337.35733570962657" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="217.32236428420444" cy="336.25972883499844" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="244.7" y="315.6" width="7.2" height="7.2" transform="rotate(45 248.3 319.2)" class="acc" stroke-width="1.4" />
+<circle cx="221.7756241372875" cy="336.7351666343831" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="248.7" y="316.2" width="7.2" height="7.2" transform="rotate(45 252.3 319.8)" class="acc" stroke-width="1.4" />
+<rect x="228.1" y="319.1" width="7.2" height="7.2" transform="rotate(45 231.7 322.7)" class="acc" stroke-width="1.4" />
+<rect x="226.9" y="331.0" width="7.2" height="7.2" transform="rotate(45 230.5 334.6)" class="acc" stroke-width="1.4" />
+<circle cx="169.8851021613089" cy="354.7676179270842" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="227.50363671518005" cy="348.77148876245633" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="173.35557455555806" cy="354.1157317018269" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="219.7" y="344.7" width="7.2" height="7.2" transform="rotate(45 223.3 348.3)" class="accs" stroke-width="1.4" fill="none" stroke="var(--acc)"/>
+<circle cx="131.43969677577422" cy="369.66144221073966" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="104.93051669690763" cy="376.6879368955034" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="340.1" y="345.1" width="7.2" height="7.2" transform="rotate(45 343.7 348.7)" class="acc" stroke-width="1.4" />
+<rect x="286.4" y="357.2" width="7.2" height="7.2" transform="rotate(45 290.0 360.8)" class="acc" stroke-width="1.4" />
+<circle cx="287.2858155660791" cy="367.8517343783892" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="229.24955399330503" cy="377.09258521246386" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="170.12507678233644" cy="394.10261073475044" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="103.88305226578481" cy="393.46765613323606" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="85.83369821257747" cy="414.67493404604534" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="219.54555449175112" cy="487.90683808714954" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="300.0" y="306.3" width="7.2" height="7.2" transform="rotate(45 303.6 309.9)" class="acc" stroke-width="1.4" />
+<rect x="300.0" y="308.9" width="7.2" height="7.2" transform="rotate(45 303.6 312.5)" class="acc" stroke-width="1.4" />
+<rect x="338.2" y="327.9" width="7.2" height="7.2" transform="rotate(45 341.8 331.5)" class="acc" stroke-width="1.4" />
+<rect x="338.2" y="314.4" width="7.2" height="7.2" transform="rotate(45 341.8 318.0)" class="acc" stroke-width="1.4" />
+<circle cx="296.0980244248175" cy="320.75340573832204" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="273.47842913270983" cy="322.29039320135894" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="227.53659871920007" cy="336.84765815681135" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="227.23905831732168" cy="346.7402503260291" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="208.55495542045347" cy="347.61768306767414" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="267.4671226223428" cy="319.2802592282891" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="256.28365334590967" cy="317.66476216237476" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="288.47499633990344" cy="311.65165964768744" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="287.4833748370035" cy="313.2002968560472" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="304.9" y="311.9" width="7.2" height="7.2" transform="rotate(45 308.5 315.5)" class="acc" stroke-width="1.4" />
+<rect x="308.7" y="303.0" width="7.2" height="7.2" transform="rotate(45 312.3 306.6)" class="acc" stroke-width="1.4" />
+<circle cx="300.96367798281574" cy="315.6940029957735" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="282.1641130272053" cy="317.3786230317846" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="304.6" y="310.5" width="7.2" height="7.2" transform="rotate(45 308.2 314.1)" class="acc" stroke-width="1.4" />
+<rect x="304.6" y="311.2" width="7.2" height="7.2" transform="rotate(45 308.2 314.8)" class="acc" stroke-width="1.4" />
+<rect x="321.3" y="313.0" width="7.2" height="7.2" transform="rotate(45 324.9 316.6)" class="acc" stroke-width="1.4" />
+<rect x="321.3" y="310.6" width="7.2" height="7.2" transform="rotate(45 324.9 314.2)" class="acc" stroke-width="1.4" />
+<circle cx="329.91782110364954" cy="409.6860974065599" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="419.0762650563139" cy="437.3774709108546" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="233.13344888734193" cy="325.8099776571877" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="224.8543543539624" cy="314.4915504739317" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="220.21084875165747" cy="323.32097778722573" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="210.6258024945029" cy="323.80351728353645" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="273.6" y="309.8" width="7.2" height="7.2" transform="rotate(45 277.2 313.4)" class="acc" stroke-width="1.4" />
+<rect x="273.6" y="309.7" width="7.2" height="7.2" transform="rotate(45 277.2 313.3)" class="acc" stroke-width="1.4" />
+<rect x="268.2" y="307.9" width="7.2" height="7.2" transform="rotate(45 271.8 311.5)" class="acc" stroke-width="1.4" />
+<rect x="268.2" y="308.7" width="7.2" height="7.2" transform="rotate(45 271.8 312.3)" class="acc" stroke-width="1.4" />
+<circle cx="327.4103131097853" cy="337.4457019564215" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="350.66964846178996" cy="338.76260012583907" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="319.12895431652396" cy="334.2930104864993" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="328.3441597858096" cy="334.51810636460146" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="328.2207729930601" cy="334.80957328694086" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="318.81208885584385" cy="335.8282737403809" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="280.36059492754396" cy="318.43104029883614" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="334.853746393513" cy="338.1529789594799" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="299.7571957940638" cy="318.2850983016702" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="326.55989214184495" cy="336.55701050772376" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="410.711341904514" cy="322.5985335736318" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="288.1469041070021" cy="318.51975362939993" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="391.2790492956077" cy="322.4151398660271" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="221.4368177156779" cy="370.7177137952136" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="239.00492184502633" cy="385.9496839212274" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="221.3611759228042" cy="370.1347799505348" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="266.4615476154851" cy="339.97394893603405" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="209.65168956816666" cy="361.51576252335065" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="158.10955529926326" cy="400.4141779035888" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="132.5667236666742" cy="435.355355060991" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="239.00492184502633" cy="330.3028001927296" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="278.4" y="323.6" width="7.2" height="7.2" transform="rotate(45 282.0 327.2)" class="acc" stroke-width="1.4" />
+<circle cx="152.43327633332575" cy="371.4004358575241" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="152.2548585217549" cy="369.77366738773134" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="158.10955529926326" cy="342.4212436340548" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="214.1" y="334.9" width="7.2" height="7.2" transform="rotate(45 217.7 338.5)" class="acc" stroke-width="1.4" />
+<circle cx="193.99877979840434" cy="334.8325769888593" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="151.35188264416172" cy="334.6359908492084" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="227.1" y="316.6" width="7.2" height="7.2" transform="rotate(45 230.7 320.2)" class="acc" stroke-width="1.4" />
+<rect x="227.1" y="315.5" width="7.2" height="7.2" transform="rotate(45 230.7 319.1)" class="acc" stroke-width="1.4" />
+<rect x="237.5" y="316.9" width="7.2" height="7.2" transform="rotate(45 241.1 320.5)" class="acc" stroke-width="1.4" />
+<rect x="237.5" y="315.6" width="7.2" height="7.2" transform="rotate(45 241.1 319.2)" class="acc" stroke-width="1.4" />
+<circle cx="215.54659441678916" cy="337.6215639200481" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="344.6839988312502" cy="365.09388307370114" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="344.83076532593714" cy="375.98056240958147" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="344.0" y="315.0" width="7.2" height="7.2" transform="rotate(45 347.6 318.6)" class="acc" stroke-width="1.4" />
+<circle cx="314.6460155592649" cy="401.53314849944064" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="273.96876657000143" cy="342.5313921271368" r="4" class="accs" fill-opacity="0.55" stroke-width="1.4"/>
+<circle cx="228.67515654771017" cy="339.46531400822545" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="202.044810006751" cy="343.38667154458153" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<rect x="239.4" y="318.3" width="7.2" height="7.2" transform="rotate(45 243.0 321.9)" class="acc" stroke-width="1.4" />
+<rect x="275.0" y="331.2" width="7.2" height="7.2" transform="rotate(45 278.6 334.8)" class="acc" stroke-width="1.4" />
+<rect x="331.9" y="337.4" width="7.2" height="7.2" transform="rotate(45 335.5 341.0)" class="acc" stroke-width="1.4" />
+<circle cx="239.0558254347871" cy="346.6024481806354" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="237.47646452547033" cy="345.3336185714366" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="233.07529710324582" cy="332.1117677787185" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="230.40748347787584" cy="342.2755101728851" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="216.73827663408088" cy="342.2885513260611" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="234.16739642515495" cy="356.3032578186405" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="228.57869890564626" cy="344.0420402426515" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="244.79922959725138" cy="332.99689171550483" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="344.20483646453005" cy="347.49209849173684" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="246.29420097279015" cy="350.81720467685045" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="242.17451338812995" cy="357.54530677435577" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="222.99630808860363" cy="355.5190786497485" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="235.9209564510702" cy="336.07671839797666" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="305.82885248297623" cy="334.1274293436357" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="307.5544632826551" cy="328.94248147962554" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="196.5820648393122" cy="332.70043303927866" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="243.96419278117423" cy="327.5627803334302" r="4" class="acc" fill-opacity="0.8" stroke-width="1.4"/>
+<line x1="317.30898720319715" x2="463" y1="306.6318022134601" y2="319" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="323.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev→Haiku</text>
+<line x1="293.47499633990344" x2="463" y1="311.65165964768744" y2="331" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="335.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Haiku</text>
+<line x1="229.8543543539624" x2="463" y1="314.4915504739317" y2="343" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="347.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Cerebras-Qwen</text>
+<line x1="274.39972557070155" x2="463" y1="317.42517472842474" y2="355" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="359.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev→Jev</text>
+<line x1="293.1469041070021" x2="463" y1="318.51975362939993" y2="367" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="371.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Qwen FP8</text>
+<line x1="256.2988791064373" x2="463" y1="319.6205861823431" y2="379" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="383.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Dec4B→Jev</text>
+<line x1="286.9996180819084" x2="463" y1="327.17338393996545" y2="391" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="395.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Dec4B→Clef</text>
+<line x1="156.35188264416172" x2="463" y1="334.6359908492084" y2="403" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="407.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">DGemma</text>
+<line x1="232.53659871920007" x2="463" y1="336.84765815681135" y2="415" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="419.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">luna-dec</text>
+<line x1="229.99411956891913" x2="463" y1="337.35733570962657" y2="427" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="431.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Jev</text>
+<line x1="233.67515654771017" x2="463" y1="339.46531400822545" y2="439" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="443.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">MS-Dec1</text>
+<line x1="207.044810006751" x2="463" y1="343.38667154458153" y2="451" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="455.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Drex</text>
+<line x1="178.35557455555806" x2="463" y1="354.1157317018269" y2="463" class="axl" stroke-opacity="0.4"/>
+<text x="466.0" y="467.0" font-size="10" text-anchor="start" style="paint-order:stroke;stroke:Canvas;stroke-width:3;stroke-linejoin:round">Decider-4B</text>
+<line x1="458" x2="458" y1="38" y2="240" class="axl" stroke-dasharray="3 3"/>
+<text x="464.0" y="22.0" font-size="10" text-anchor="start" class="mut">no recorded API invoice</text>
+<text x="464.0" y="34.0" font-size="10" text-anchor="start" class="mut">(56 configurations)</text>
+<text x="40.0" y="552.0" font-size="11" text-anchor="start" class="acc">●</text>
+<text x="56.0" y="552.0" font-size="10.5" text-anchor="start" class="mut">single pass / incomplete coverage = ○*</text>
+<text x="340.0" y="552.0" font-size="11" text-anchor="start" class="acc">◆</text>
+<text x="356.0" y="552.0" font-size="10.5" text-anchor="start" class="mut">with reviewer · audit rule</text>
+<text x="40.0" y="572.0" font-size="10.5" text-anchor="start" class="mut">right lane = no recorded API invoice</text>
+<text x="40.0" y="590.0" font-size="10.5" text-anchor="start" class="mut">≥ = partial or lower-bound cost</text>
+<text x="616.0" y="588.0" font-size="10" text-anchor="end" class="mut">GT v5 · data cut v2.10.0</text>
+</svg>

@@ -1,0 +1,1704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Evaluating typed decisions — system-one-bench</title>
+<link rel="canonical" href="https://system-one-bench.netlify.app/article/">
+<link rel="alternate" hreflang="es" href="https://system-one-bench.netlify.app/articulo/"><link rel="alternate" hreflang="en" href="https://system-one-bench.netlify.app/article/"><link rel="alternate" hreflang="x-default" href="https://system-one-bench.netlify.app/articulo/">
+<link rel="icon" type="image/png" href="https://system-one-bench.netlify.app/assets/brand/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://system-one-bench.netlify.app/assets/site.css"><link rel="stylesheet" href="https://system-one-bench.netlify.app/assets/nav.css">
+<style>
+.art{max-width:84ch;margin-inline:auto;padding:26px 30px;line-height:1.62}
+.art h1{font-size:clamp(23px,3.2vw,30px);letter-spacing:-.01em;margin-bottom:.3em}
+.art h2{margin-top:1.6em;padding-top:.5em;border-top:1px solid var(--rule);font-size:clamp(19px,2.4vw,22px)}
+.art h3{margin-top:1.2em;font-size:17px}
+.art p{margin:.7em 0}
+.art ul,.art ol{padding-left:24px;display:grid;gap:4px;margin:.6em 0}
+.art pre{overflow-x:auto;background:var(--surface-2);border-radius:8px;padding:12px 14px;font-size:13px;max-width:100%}
+.art pre code{background:none;padding:0}
+.art blockquote{border-left:3px solid var(--rule);margin:.8em 0;padding:.2em 14px;color:var(--ink-2)}
+.art figcaption{color:var(--muted);font-size:14px;margin-top:6px}
+.art img{max-width:100%;height:auto}
+.art .tablewrap{margin:.8em 0}
+.art a{word-break:break-word}
+@media (max-width:640px){.art{padding:16px 14px}}
+</style>
+</head>
+<body>
+<header class="sitebar"><div class="sitebar-in">
+  <a class="brand" href="https://system-one-bench.netlify.app/en/index.html"><img class="brand-logo" src="https://system-one-bench.netlify.app/assets/brand/logo.png" alt="">system-one-bench</a>
+  <nav aria-label="Site pages">
+    <a href="https://system-one-bench.netlify.app/en/index.html">Summary</a><a href="https://system-one-bench.netlify.app/en/model.html">Model</a><a href="https://system-one-bench.netlify.app/en/casos.html">Cases</a><a href="https://system-one-bench.netlify.app/en/preguntas.html">Per question</a><a href="https://system-one-bench.netlify.app/en/comparar.html">Compare</a><a href="https://system-one-bench.netlify.app/en/revisor.html">Reviewer</a><a href="https://system-one-bench.netlify.app/en/experimentos.html">Experiments</a><a href="https://system-one-bench.netlify.app/en/limites.html">Limits</a><a href="https://system-one-bench.netlify.app/en/coste.html">Cost</a><a href="https://system-one-bench.netlify.app/en/metodologia.html">Methodology</a><a href="https://system-one-bench.netlify.app/article/" aria-current="page">Article</a><a href="https://github.com/Mindbreaker81/system-one-bench-public" rel="noopener">GitHub</a>
+  </nav>
+  <span class="langsw" aria-label="Language / Idioma"><a href="https://system-one-bench.netlify.app/articulo/" hreflang="es">ES</a>·<span class="on">EN</span></span>
+  <span class="ver" title="Benchmark version">v2.11.0</span>
+</div></header>
+<script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".sitebar nav a").forEach(function(a){if(a.getAttribute("href")===p)a.setAttribute("aria-current","page")})})();</script>
+
+<main class="wrap">
+<article class="panel art">
+<h1
+id="evaluating-typed-decisions-review-passes-schema-visibility-and-configuration-sensitivity-in-a-narrow-domain-bilingual-benchmark">Evaluating
+typed decisions: review passes, schema visibility and configuration
+sensitivity in a narrow-domain bilingual benchmark</h1>
+<p><em>Version 2.11.0 · data cut v2.10.0 (tag v2.10.0) · ground truth
+v5</em></p>
+<h2 id="summary">0. Summary</h2>
+<p>Jev scored 49.3 adjusted points in one pass. Two-pass Jev→Jev and
+Jev→Haiku scored 67.6 and 77.6 under the audit rule (§6). The scale
+measures margin over the majority baseline (0), with 100 for perfect
+decisions. All three scores rose when the same predictions were rescored
+under GT v5.</p>
+<p>Behind them sits a narrower claim: several review configurations
+improve the descriptive aggregate, some effects of the inference stack
+(the software and hardware serving the model) and of option order are
+measurable, and their transferability depends on model, task and
+uncertainty. Holm correction bounds discoveries within each test family
+(one family of 212 paired tests returned zero significant cells), but
+that bounds that family, not the whole bench; a few differences survive.
+A new Jev version, 1.14, scores 50.3 in one pass as preview (Oct 15,
+2026, same as 1.13 that day on that route) and 66.0 self-reviewed, and
+49.8 as <code>jev-latest</code> through OpenRouter (Oct 24) and 65.5
+self-reviewed, with no significant difference from 1.13 in any
+predefined contrast (§6–§8). Thirteen more deciders, served through
+OpenRouter and measured on Oct 16, 2026, do not separate from Jev after
+Holm; nor do the two Base Labs deciders of Oct 22, 2026 (57.0 and 52.3,
+§11). The local Base Labs runs also had no significant cell against Jev
+after Holm.</p>
+<h2 id="the-problem">1. The problem</h2>
+<p>Much applied natural language processing (NLP) reduces to routing: a
+message arrives and the system maps it to typed answers — which queue,
+how urgent, whether a human sees it first. We evaluate typed routing and
+literature decisions on a narrow-domain bilingual benchmark — a
+synthetic interventional pulmonology unit in Spanish and English — where
+administrative and clinical messages get a department plus urgency and
+risk tags, and a literature task asks whether a paper is relevant and
+in-domain, what study design it uses, whether it merits a deep read, and
+whether it changes practice.</p>
+<p>The circuit around the model — review pass, schema visibility,
+thinking, option order — is itself a measured variable. Messages are
+synthetic; the literature task uses published papers with benchmark
+labels. Neither involves prospective patient evaluation or clinical
+validation; “triage” means applying the contract and ground-truth
+conventions, not medical recommendations (<code>docs/bateria.md</code>,
+<code>jevbench/battery.py</code>).</p>
+<h2 id="the-system-one-contract">2. The System One contract</h2>
+<p>The contract under test — System One, by TypeSafe AI, the company
+behind Jev — is small: the input is a free-text <code>state</code> plus
+a set of typed questions, and the output is a probability distribution
+for each. A <code>choice</code> question distributes probability among
+options (for example the department); a <code>score</code> question
+answers on an ordinal scale (for example urgency); a <code>noul</code>
+question returns the probability of “yes” (for example “is this message
+hostile”). The triage records ask five questions — department, urgency,
+clinical, hostile, same_day — the paper records another five —
+relevance, domain, design, depth, practice — and the three
+out-of-distribution records three: relevance, domain, clinical. That is
+191×5 + 3×3 = 964 scored questions on 194 records. The alert protocols
+add an auxiliary <code>manipulation</code> question, also
+<code>noul</code>: does the message contain manipulation patterns meant
+to make an automated triage system misclassify it (fake urgency or
+authority, medical-keyword stuffing, embedded “system” directives,
+marketing bait)? The reviewer answers it in the second pass (it was also
+tested in one pass over raw text), evaluated on adv3, adv4 and adv5. It
+measures something different — whether the system detects manipulated
+messages — so it stays outside the adjusted aggregate, evaluated
+separately as an alert (§7).</p>
+<p>The wire contract — the input/output format exchanged with every
+system — is shared; each implementation may use one or more passes, and
+a dedicated decider may answer in a single shot. A general large
+language model (LLM) does not speak this contract natively: it enters
+through a shared adapter (<code>jevbench/adapters/llm.py</code>) that
+turns the typed questions into a prompt, calls the model (API or local)
+and returns the answer in the contract’s format. The adapter builds on
+<a
+href="https://github.com/typesafe-ai/system-one-adapter-python"><code>system-one-adapter</code></a>
+(v0.2.1, <a
+href="https://pypi.org/project/system-one-adapter/">PyPI</a>),
+TypeSafe’s open-source (MIT) package imitating its API with LLMs.
+Through the adapter an LLM answers in two modes:
+<code>probabilities</code>, where the model declares a probability
+distribution per question, comparable with Jev’s; and
+<code>discrete</code>, where it gives a single answer recorded as a 0/1
+distribution — so <code>discrete</code> implies no learned or calibrated
+probabilities: 0 or 1 by construction.</p>
+<p>There is also a limit on what the model sees: a schema (e.g. JSON,
+one probability per option) controls the shape of the answer, not
+whether the model read the questions — some local servers apply it to
+the output without copying the questions into the prompt, so the model
+can return a valid structure for questions it never saw. Not
+hypothetical: §8 shows the same 27B Qwen scoring −17.3* under a forced
+schema, the question descriptions absent from its prompt. Likewise, the
+stored <code>questions_hash</code> proves the question set was
+identical, not that its wording reached the model.</p>
+<p>Recorded probabilities are not assumed calibrated — a declared “80%”
+need not be right 80% of the time. Calibration is reported separately
+from the adjusted score, with two measures. The <strong>Brier</strong>
+score is the mean squared error of the yes/no probabilities: 0 is
+perfect; 0.25 is answering 50 % every time; lower is better. The
+<strong>ECE</strong> (expected calibration error) bins the top-option
+confidences into ten bins and compares mean confidence with the strict
+hit rate; for yes/no answers, confidence is max(p, 1−p). Jev’s mean
+yes/no Brier over the nine base+new phases — including OOD, excluding
+adv4/adv5 — is 0.062; the current web aggregates the ten scored sets
+without OOD and reports 0.077. Binary answers on the 45–55% boundary are
+counted separately: next to the 0.5 threshold (<code>noul</code> counts
+as “yes” from 0.5) a tiny change flips it (<code>docs/bateria.md</code>,
+<code>docs/resultados.md</code>).</p>
+<h2 id="the-benchmark">3. The benchmark</h2>
+<p>The benchmark contains 194 records representing 154 case units after
+grouping translations — 40 ES/EN pairs account for 80 records, and other
+construction dependencies remain possible (papers can share a PMID or
+family). The 11 sets are: ES and EN triage (14 records each), the
+literature set still called <code>papers32</code> although it holds 31
+papers after one was withdrawn, adv1 and adv2 (10 each), the
+three-record out-of-distribution set, extended ES and EN triage (26
+each), and the later adversarial sets adv3, adv4 and adv5 (20 each).</p>
+<p>Three scoring conventions need explaining. First, the
+<strong>majority baseline</strong>: what an oracle answering the most
+frequent ground-truth label would score on each question and set —
+strong enough that always answering “admin” on the adv1+adv2 department
+question gets 17 of 20 right, so raw percentages mean little. Second,
+the <strong>adjusted score</strong>: per set we compute 100×(score −
+majority)/(100 − majority), score being the percentage of points earned
+including ordinal partial credit, and aggregate as the unweighted mean
+across complete sets; the out-of-distribution set has majority 100 and
+drops out, so a complete run aggregates ten sets. Zero means “matches
+the trivial oracle”, 100 perfect, negatives worse than trivial. Third,
+the <strong>asterisk</strong>: <code>*</code> marks an aggregate over
+the complete sets of a partial run — at least one of the eleven phases
+is incomplete — descriptive, not comparable to a full-run aggregate.</p>
+<p>Uncertainty is reported at two levels. The leaderboard confidence
+interval (CI) is a bootstrap over records within each set (2,000
+resamples, fixed seed); it measures sampling variation of the set and
+does not cluster translations or PMIDs. Pairwise claims use exact
+two-sided McNemar tests on strict correctness — a different quantity
+from the adjusted score, which grants half credit for ordinal
+near-misses — with Holm correction across each declared family of cells.
+Some session contrasts use a cluster-paired bootstrap (10,000 resamples)
+that does group translations and paper families; the two interval
+conventions are labelled where they appear.</p>
+<p>Ground truth deserves the same honesty. The initial labels were
+LLM-assisted. Documented human review covers 166 distinct fields — about
+17% of the 964 scored questions — selected by dispute, not at random: 78
+disputed fields human-annotated in September alongside Codex work (84
+completions, 5 reviews; after P02’s withdrawal, 83 and 5 — 88 fields),
+and 88 more reviewed by the author on October 11 over Codex completions
+or reviews, with label-blind auxiliary opinions from Cursor and Devin.
+Blind annotation agreed with the previous labels on 51 of 88 and
+disputed 37; adjudication changed 23 labels and kept 14. The adv5 labels
+were validated by Claude by delegation; the rest of the main battery has
+no documented human review. Recounting the same 78 fields against
+adjudicated v5 leaves 20 disagreements (per-field agreement: clinical
+8/8, department 9/12, hostile 2/3, same_day 16/17, urgency 23/38): small
+dispute-selected samples that estimate no global reliability — and the
+October labels coincide with v5 by construction, no independent
+reliability check either. Nine fields were adjudicated in version 3, one
+paper was withdrawn in version 4 and the October adjudication produced
+version 5; every change is logged (<code>data/GT_CHANGELOG.md</code>,
+<code>docs/segunda_anotacion/resultados.md</code>,
+<code>docs/validacion_gt_v5.md</code>).</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig4_history.svg"><img src="figuras/en/fig4_history.svg" alt="Figure 4 — Leaderboard milestones by metadata date" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+Leaderboard record by run metadata date over complete-coverage
+configurations: any configuration, single pass, dedicated non-LLM single
+pass. Scroll horizontally on small screens. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<p>Figure 4 shows how the leaderboard record evolved over the 108
+complete-coverage configurations of the 115-configuration web selection
+by run metadata date, with documented fallbacks for fusions that carry
+no timestamp, recomputed under the current ground truth. Read it as
+milestones of which configurations existed, not as a causal
+accuracy-progress curve.</p>
+<h2 id="the-contenders">4. The contenders</h2>
+<p>The manifest lists 124 entries. Six are scoreboard-only (three
+Decider review fusions, the discarded hard rules, legacy Laya and one
+thinking control). The public site adds three DiffusionGemma
+configurations: 124 − 6 + 3 = 121. The summary page shows 115, leaving
+three GLiNER variants, typed Laya, direct TypeSafe Jev and Jev→Jev
+review to the case explorer. Audit and review fusions can share the same
+acquisition. Only the two local Base Labs runs added manifest entries
+after v2.7.0. Earlier cuts added Drex v1.5 (v2.2.0), three Decider-4B
+reviewer cascades (v2.3.0), Jev 1.14 preview and thirteen OpenRouter
+endpoints (v2.4.0), the October 22 Base Labs API runs (v2.6.0) and the
+OpenRouter Jev 1.14 run and audit cascade (v2.7.0). The v2.5.0
+confident-error and LoRA analyses added no manifest entries.</p>
+<p>The families: Jev 1.13 served by two providers and Jev 1.14, measured
+in preview through TypeSafe’s API and already as <code>jev-latest</code>
+through OpenRouter; Microsoft-Decision-1, a closed decision endpoint
+reached through OpenRouter behind the same wire adapter, plus thirteen
+endpoints measured on October 16 and two Base Labs endpoints on October
+22 (§11); general LLMs behind the shared adapter (OpenAI models, a 27B
+Qwen local and on Cerebras, GPT-OSS-120B, Claude Haiku); OpenAI’s
+gpt-6-luna hosted decision endpoints via OpenRouter and the provider’s
+native API; closed-API behavioral classifiers such as Span-01; and
+dedicated open-weight deciders — Decider, AnyJev, GLiNER, Julia, Laya,
+Nimble, Tev1, Clef, CLM, Strands, DiffusionGemma, Drex and the Base Labs
+pair — plus the MedGemma/Gemma specialization pair. The grouping is
+architecturally mixed — AnyJev wraps an open LLM, DiffusionGemma a
+text-diffusion model. Each entry keeps model repo, revision, dtype and
+backend on record (<code>docs/modelos.md</code>,
+<code>docs/infra_runs/</code>).</p>
+<p>Jev→Haiku audit has the highest adjusted score on the board at 77.6.
+Luna→Jev audit scores 74.6 (majority 0). Single-pass generalists include
+Haiku at 73.0, Cerebras Qwen at 70.3 and gpt-6.1-sol at 69.2. A local
+Qwen configuration without visible questions scored −17.3* (§8). Among
+dedicated single passes, local mammoth-1 scored 58.3 and elephant-1 53.6
+(§11); Clef-27B scored 55.8, DiffusionGemma 51.6–51.8 and Jev 49.3. The
+thirteen October 16 endpoints ranged from 30.7 to 54.1. The hosted luna
+endpoints scored 49.7* and 39.8, Span-01 variants 4.5–19.1 and CLM
+−41.0. Intervals overlap within these descriptive bands.</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig1_leaderboard.svg"><img src="figuras/en/fig1_leaderboard.svg" alt="Figure 1 — Global leaderboard: adjusted score and 95% CI" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+Adjusted score per configuration; whiskers = 95% bootstrap CI,
+<code>*</code> = incomplete coverage, 0 = majority oracle. Scroll
+horizontally. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<p>Figure 1 shows the spread over an editorial selection of the
+manifest: whiskers are the 95% bootstrap interval of the aggregate,
+<code>*</code> marks incomplete coverage, and the zero line is the
+majority oracle. The top of the table is dominated by two-pass circuits;
+the bottom is populated by single-pass classifiers that fall below the
+trivial baseline.</p>
+<h2 id="the-experiments">5. The experiments</h2>
+<p>An experiment, here, is not “run the leaderboard again”: it is a
+concrete question with a criterion written before measuring —
+thresholds, fusion rules, evaluability gates — and a verdict kept even
+when negative; the battery is the same cases and scorer nearly every §4
+contender goes through. Experiments used model subsets chosen by the
+question; no result generalizes to models that did not take it.</p>
+<p>The inventory contains 57 cards in 16 blocks. Historical cards retain
+their v2/v3 verdicts; many confirmatory experiments closed under v4,
+with the v5 replica in §13. The October 14–15 reviewer, alert and Jev
+experiments are described in §§6–8. In block 4 the passing Jev alert
+belongs to the 1.13 reviewer; results for 1.14 depend on the route (§7).
+Pre-registration dates come from the project records.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Horizontally scrollable table"><table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Block</th>
+<th>Experiments (verdict)</th>
+<th>Models</th>
+<th style="text-align: right;">§</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Historical controls: vote, disagreement and rerun</td>
+<td>three-call vote: Neutral; Jev↔︎Laya gate: Ruled out; historical
+rerun: Laya repeatable on that rerun; Jev with boundary jitter;
+department reviewer: Jev’s reviewer raises department in that report.
+Laya self-review and the cross do not.</td>
+<td>Jev, Laya</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td>2. Cascades with Jev and API reviewers</td>
+<td>Jev→Jev reviewer: Passes; Jev→Jev cascade (v3 table): Passes on the
+v3 universe (a different table from v2); cascade outside Jev:
+Descriptive: self-review barely helps; with Jev as reviewer Decider-4B
+reaches the Jev→Jev band. No superiority McNemar in this section; luna
+as reviewer: Does not pass (criterion A); sol as reviewer: Passes
+(criterion A). The higher aggregate than the Jev reviewer is not
+superiority after Holm; DiffusionGemma→Jev: Descriptive: adjusted score
+rises with no demonstrated per-question improvement and no equivalence.
+The reviewer alert passes; Cerebras Qwen3.8-27B reviewer: Descriptive:
+higher adjusted score with no per-question significance. Not in the
+methodology table.</td>
+<td>Jev, Decider, luna, sol, DGemma, Cerebras Qwen3.8-27B</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>3. Open reviewers and execution limits</td>
+<td>open local reviewer: Does not pass (D35, AnyJev-32B, AnyJev-8B). The
+public table says “Passes (Clef-27B)” because the same criterion is met
+by Clef in another experiment; Clef-27B reviewer: Passes (Clef-27B);
+Clef-Flash 9B reviewer: Does not pass; DiffusionGemma reviewer: Not
+evaluable</td>
+<td>Decider-4B (D1); reviewers: AnyJev-8B/32B, Decider-35B, Clef-27B,
+Clef-Flash 9B, DGemma</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>4. Manipulation: rules and alerts</td>
+<td>hard rules: Ruled out; Jev alert: Passes; Span-01 alert: Does not
+pass; Clef-27B alert: Passes; Clef-Flash alert: Passes; sol alert: Does
+not pass; DiffusionGemma alert: Does not pass</td>
+<td>Jev, Span, Clef, Clef-Flash, sol, Decider, DiffusionGemma</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr>
+<td>5. Question visibility and adapter mechanism</td>
+<td>prompt×schema matrix: Interaction confirmed (mechanism closed
+afterwards by JEV-66); anti-injection ablation: Ruled out as a necessary
+or sufficient cause; visible phrases: Refuted; blind model: Confirmed;
+questions in view (v3): Historical v3, rescored under v4; questions in
+view (v4): Mixed by component (§8.2). Not superiority vs Jev; abstention
+discriminator: The battery criterion is not met on the structured route.
+Diagnostic result; no-schema controls: Descriptive. It does not
+demonstrate a single cause; Cerebras 2×2 grid: No superiority or
+equivalence. Descriptive.</td>
+<td>Qwen, Qwen-Cer.</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>6. Reasoning and answer mode on Qwen</td>
+<td>thinking ≥ +5: Inconclusive; discrete vs probabilities:
+Inconclusive; thinking on discrete: H1 refuted for the ≥5 threshold; H2
+d0 inconclusive</td>
+<td>Qwen</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>7. Option order and repeatability on Qwen</td>
+<td>bronchoscopy primacy: Confirmed; range across orders: Inconclusive
+at the v4 closure; Refuted in the v5 replica; S202 replica:
+Confirmed</td>
+<td>Qwen</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>8. Decision endpoints, refusals and rotations</td>
+<td>luna-decisions endpoint: Does not show it beats Jev; luna-decisions
+rotation: Primacy refuted; stability unconcluded; native Decisions API:
+Inconclusive version; Microsoft-Decision-1: No superiority or
+equivalence; recommendation unchanged</td>
+<td>luna-dec, Jev, Microsoft</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr>
+<td>9. Medical models and specialization contrast</td>
+<td>MedGemma vs Gemma: No superiority or clinical usefulness;
+Ministral-3B medical: Descriptive negative; not a candidate</td>
+<td>MedGemma, Gemma, Qwen, Ministral</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>10. Haiku: battery and pre-specified roles</td>
+<td>Haiku 5.5 battery: No superiority or equivalence; Haiku reviewer and
+alert: No confirmed roles; descriptive card</td>
+<td>Haiku, Jev, Decider, Clef</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>11. Sensitivity to the ground-truth revision</td>
+<td>replica under GT v5: The confirmatory picture holds. Two secondary
+findings changed.</td>
+<td>Qwen, DGemma, Jev, Gemma, MedGemma, luna-dec…</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td>12. DiffusionGemma: reads, repeatability, order and generative
+route</td>
+<td>DiffusionGemma single pass: Mixed contract: level inconclusive,
+Brier and the other P components confirmed. No Holm superiority; read
+contrast: Confirmed on all four components. Recommendation S1;
+repeatability and host: R inconclusive on agreement and refuted on
+distributions. X refuted on both; DiffusionGemma rotation: Rot1.c
+refuted. Rot1.a and Rot1.b inconclusive because of host; generative
+route: Discrete errors confirmed. Probabilities inconclusive because of
+the stop. No comparable partial score.</td>
+<td>DGemma, Jev</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>13. Technical harness trials</td>
+<td>adapter robustness: The technical trial meets the operational
+criterion. Not a clinical validation; window protocol: Technical trial.
+Truncation is not the protocol’s normal branch and not a replica;
+OpenRouter vs TypeSafe: Technical control. No proved equivalence.</td>
+<td>Strands, Jev</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td>14. Own model: fine-tuning</td>
+<td>own Qwen3.5-9B LoRA (JEV-89): H1 refuted; no practical success</td>
+<td>Qwen3.5-9B</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>15. Fact verification (card 56)</td>
+<td>BroncoScribe, an optional task outside the adjusted score: 509
+decisions on ten fictional scripts (majority accuracy 0.515). Clef-Flash
+met the alert thresholds on CUDA and on Intel with up to eight questions
+per call. At sixteen on Intel, counting failed outputs as alerts raised
+the false-positive rate to 0.115.</td>
+<td>Clef-Flash, Clef, Jev, Base Labs</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>16. On-device inference (card 57)</td>
+<td>Qwen3.5-4B Q4 and Decider-0.8B completed the battery on an 8 GB
+Jetson.</td>
+<td>Qwen, Decider</td>
+<td style="text-align: right;">9</td>
+</tr>
+</tbody>
+</table></div>
+<p>In block 5, “§8.2” is a section of the run manifest <a
+href="https://github.com/Mindbreaker81/system-one-bench-public/blob/v2.10.0/docs/infra_runs/qwen38_jev67.md"><code>docs/infra_runs/qwen38_jev67.md</code></a>,
+not of this article.</p>
+<p>Model × experiment-type coverage is not uniform: ● valid evaluation;
+○ absence; — not applicable by design; ▽ attempted but not evaluable.
+Columns: Batt. = battery; D1/Rev. = first-pass/reviewer roles in a
+cascade; Alert = one-pass manipulation alert; Rot./Repl. = option-order
+rotation/replicate; Stack = §8 sessions; Spec. = §10 contrast; Endp. =
+§11 endpoints; Rules = §7 regexes. In the battery column, ● = the eleven
+phases (194 cases): the ten main-phase files plus OOD, reported
+separately; file presence does not imply full scorable coverage
+(exceptions in the per-run table). ◐ = partial battery: 9 of 11 phases,
+without adv4/adv5. As of Oct 14, 2026, Decider (including 0.8B/2B/35B),
+AnyJev, GLiNER, Laya and Julia have ● on the variants in this matrix —
+the same reading as the Experiments page. Jev (<code>jev_v3</code>) has
+●, with the partial variant <code>jev_typesafe_v1</code> in the same
+family. The Decider battery mark here refers to the listed variants on
+their original hardware.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Horizontally scrollable table"><table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr>
+<th>Model</th>
+<th>Batt.</th>
+<th>D1</th>
+<th>Rev.</th>
+<th>Alert</th>
+<th>Rot.</th>
+<th>Repl.</th>
+<th>Stack</th>
+<th>Spec.</th>
+<th>Endp.</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+</tr>
+<tr>
+<td>Microsoft-Decision-1</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>●</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Decider</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>AnyJev</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>GLiNER</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Laya</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Julia</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>gpt-6-luna</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>○</td>
+</tr>
+<tr>
+<td>gpt-6.1-sol</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Claude Haiku 5.5</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Qwen3.8-27B</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>GPT-OSS-120B</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Ministral-3B-med</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Gemma 3 / MedGemma</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Span-01</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Nimble</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Tev1</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>CLM</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Clef-27B</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Clef-Flash</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Strands</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>DiffusionGemma</td>
+<td>●</td>
+<td>●</td>
+<td>▽</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>○</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Drex</td>
+<td>●</td>
+<td>○</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>●</td>
+<td>—</td>
+<td>○</td>
+<td>—</td>
+<td>○</td>
+</tr>
+</tbody>
+</table></div>
+<p>The gaps close through pre-registered protocols: on Oct 14, 2026,
+Nimble, Tev1, CLM, Strands and Drex took the one-pass alert, rotation
+and replicate; Microsoft-Decision-1 the alert and, with Nimble and Drex,
+the Decider-4B reviewer role. None meets the alert bar or the reviewer
+criterion, and only Nimble proves order-sensitive (§6–§8). On Oct 15,
+2026, Jev 1.14 took the replicate, rotation, the Jev→Jev cascade and the
+Decider-4B reviewer role, and Jev 1.13 the replicate and rotation
+through the same route on the same day — hence the rotation ● in the Jev
+row, which does not come from <code>jev_v3</code>. On Oct 24, 2026, Jev
+1.14 took the battery and the Jev→Jev cascade through OpenRouter,
+already <code>jev-latest</code> (<code>jev_1_14</code>) — same Jev-row
+marks, measured apart (§6–§7). The October OpenRouter acquisitions
+measured the battery. Six models also have local/API comparisons (§9).
+The local Base Labs models also took the separate fact-verification task
+(block 15), outside this role matrix.</p>
+<h2 id="review-passes">6. Review passes</h2>
+<p>The bench’s strongest descriptive pattern is the second pass. In a
+review cascade a first-pass decision (D1) is shown to a reviewer model
+re-deciding under one of two fusion rules — <code>audit</code> and
+<code>review</code> — sharing one reviewer acquisition, not independent
+replicates. Operationally, <code>review</code> adopts every second-pass
+answer; <code>audit</code> keeps the first-pass one unless the reviewer
+marks it wrong (the <code>__ok</code> check below 0.5), and replaces the
+department whenever the reviewer’s manipulation alert reaches 0.5. All
+at complete 194-record coverage: Decider-4B alone scores 33.8 adjusted,
+and the same first pass reviewed by Jev under the audit rule scores 65.6
+(<code>decider_4b</code> → <code>decider_4b_jevrev_audit</code>). Jev
+alone scores 49.3; reviewed by itself, 67.6 (<code>jev_v3</code> →
+<code>jev_cascade_audit</code>); reviewed by Haiku, 77.6
+(<code>jev_haiku55rev_audit</code>), the highest adjusted score among
+complete audit configurations in this cut — its <code>review</code>
+variant scores 79.6, a secondary derivative of the same raw outputs, off
+the leaderboard. Other circuits land in the same band: gpt-6-luna’s
+first pass reviewed by Jev audits 74.6; Jev reviewed by two
+Cerebras-Qwen variants 71.3 and 73.1; Decider reviewed by sol 68.4
+(audit) / 70.6 (review), by Haiku 69.4, and by Clef 58.7 (audit) / 60.3
+(review).</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig2_cascades.svg"><img src="figuras/en/fig2_cascades.svg" alt="Figure 2 — Review cascades (audit rule) and reviewer criterion A" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+First pass (open dot) vs audit-rule cascade per reviewer (filled dot);
+below, reviewer criterion A on the Decider-4B first pass. Scroll
+horizontally. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<p>Two caveats. First, statistical: the paired tests behind these
+differences mostly do not survive multiplicity. Jev-audit versus its own
+first pass yields 0 of 53 cells significant after Holm — 54 vs 8 summed
+discordant pairs, little per-cell power, no demonstrated absence of
+effect; Decider→Jev versus Jev→Jev also yields 0 of 53: no demonstrated
+difference — and no demonstrated equivalence either, since no
+equivalence margin was pre-registered. Under the previous ground truth
+one cell did survive — Decider→Clef beat Decider on the paper-depth
+field (b/c = 1/17 discordant pairs, Holm-adjusted p = 0.0077); rescored
+under v5, that cell does not survive either. Second, causal: a control
+(<code>jev_avg2_control</code>, 154 of 194 records, lacking the last two
+adversarial sets) averages two independent Jev first passes; on the
+eight shared scored sets: 55.5 first pass, 56.1 two-pass average, audit
+72.6, review 74.1. The review prompt was designed after observing early
+failures — evidence for the circuit, not a universal causal law. The
+partial control must never be compared against the full 49.3 figure.</p>
+<p>We also pre-registered a deployment-shaped bar for a local reviewer —
+criterion A: recover ≥50% of the Jev reviewer’s gain on the same first
+pass on adv3+adv5 and on the ES/EN triage mean; lose ≤2 points on any
+set; flag ≥7 of 10 adv5 attacks with ≤1 false alarm in 10. Success is
+defined by that bar, not a horizontal adjusted threshold. Clef was the
+first fully local reviewer to meet it — under the previous ground truth
+before one record was withdrawn, and under the current one — recovering
+79.6% of the gain adversarially and 61.1% on triage. Haiku meets
+criterion A under the current ground truth (over the Decider first pass:
+adv5 alert 8/10, no false alarms; over Jev’s first pass, 7/10), and sol
+also met it over the same Decider first pass. The expanded alert
+criterion (B) — alert quality on all three adversarial sets — changes
+the picture: Haiku fails the middle set with both first passes (5/10),
+and sol fails it too. Do not conflate Clef-as-reviewer (9/10 alerts, one
+false alarm) with Clef answering in one pass (10/10, one false alarm):
+different roles.</p>
+<p>None of the three reviewers measured on Oct 14, 2026 over
+Decider-4B’s first pass meets criterion A: Microsoft-Decision-1
+(<code>decider_4b_msrev_audit</code>) recovers over three quarters of
+the Jev-reviewer gain on both blocks without worsening any phase; at 64
+adjusted it sits behind Haiku (69), sol (68) and Jev (66), ahead of Clef
+(59), failing only the adv5 alert — 2 false alarms in 10 honest (limit
+1). Drex (52) and Nimble (46) stay under half the adv3+adv5 gain, adv5
+alerts 3 of 10. Figure 2 does not draw them.</p>
+<p>Jev 1.14 repeated both Jev circuits under a pre-registration frozen
+beforehand. Reviewed by itself it goes from 50.3 to 66.0 under audit
+(<code>jev_v114_typesafe_preview</code> →
+<code>jev114_cascade_audit</code>; 68 under the review rule) and meets
+the Jev→Jev cascade criterion — its observed scores exceed the control
+in all four blocks (triage, papers, adv1+2, new cases), while a control
+averaging the first pass with its replicate stays at 51. As a Decider-4B
+reviewer (<code>decider_4b_jev114rev_audit</code>, 62.8) it recovers
+71.4% of the 1.13 reviewer’s gain on adv3+adv5 and 72.2% on triage,
+worsens no phase, adv5 alert 8 of 10 with one false alarm: it meets
+criterion A. Against their 1.13 counterparts the discordances lean
+somewhat toward 1.13 — 15 vs 25 in the cascade and 13 vs 28 as reviewer,
+summed over the 53 tests — but Holm gives p = 1 in every cell: no field
+difference reached significance. Both criteria keep 1.13 as
+reference.</p>
+<p>Re-measured on Oct 24, 2026 through OpenRouter —
+<code>jev-latest</code> (<code>typesafe/jev-1.14-20261014</code>),
+<code>jev_v3</code>’s own route — the 1.14 (<code>jev_1_14</code>)
+scores 49.8 [39.5; 59.3] against <code>jev_v3</code>’s 49.3, its cascade
+(<code>jev_1_14_cascade_audit</code>) at 65.5 [58.6; 71.9] audit / 71.3
+[65.4; 76.9] review (1.13: 67.6/69.4; preview: 66.0/68.4). No cell
+survives Holm: the pass against <code>jev_v3</code> sums 18/17
+discordances and 0 of 53, against the preview 6/5 and 0 of 53, and the
+audit cascade against the 1.13 one, 25/14 and 0 of 53.</p>
+<h2 id="the-manipulation-alert">7. The manipulation alert</h2>
+<p>The alert sets — adv3, adv4, adv5 — contain 30 manipulated and 30
+honest messages, 10 of each per set. A detector fires at
+<code>manipulation</code> ≥ 0.5; we count true positives on attacks,
+false alarms on honest messages. Jev’s review alert detects 25 of 30
+attacks, one false positive among 30 honest; Clef’s one-pass alert
+detects 27, also one false positive. Their paired difference is not
+demonstrated: on the same 60 records, exact McNemar sees 0 cases correct
+only under Jev, 2 only under Clef, p = 0.50 — neither superiority nor
+equivalence; the roles differ too: a second pass conditioned on the
+first versus a single pass over raw text.</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig3_alerts.svg"><img src="figuras/en/fig3_alerts.svg" alt="Figure 3 — Manipulation alert by detector and the adv4 rule validation" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+Alert hits on 30 manipulated messages, false alarms on 30 honest ones,
+per detector; below, the three hard regexes validated on adv4. Scroll
+horizontally. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<p>The rest of the field separates clearly. Haiku in one pass detects 16
+of 30 attacks (6/4/6 per set) with no false alarms — on these 60 records
+measurably worse than both references: versus Clef the discordant pairs
+are 11/1 (Holm-adjusted p = 0.013 over a two-test family) and versus the
+Jev reviewer 9/1 (p = 0.021). As a reviewer, Haiku reaches 8/5/7, one
+false alarm, reading Jev’s first pass and 8/5/8 reading Decider’s —
+passing criterion A’s adv5 leg on either (A’s recovery thresholds are
+measured on Decider’s), failing criterion B on either. The one-pass
+variants of sol (22/30, zero false alarms), Clef-Flash (21/30, zero) and
+DiffusionGemma (19/30, zero) sit in between, and the Span-01 alerts
+trail at 8/30 and 5/30. Treating the luna-decisions endpoint’s provider
+refusals as an alert catches 5 of 30 attacks — a refusal is not a
+validated detector; no detector should be inferred from a main
+score.</p>
+<p>The seven one-pass alerts of Oct 14, 2026 (Microsoft, Drex, the two
+Tev1, Nimble, Strands, CLM) all miss the per-set bar (7 attacks, ≤1
+false alarm). Microsoft catches the most (26 of 30) but fires 4 false
+alarms (3 on adv5) and misses adv4 (6 of 10); Holm does not separate it
+from either reference. Drex (1 false alarm in 30, like Nimble, but 21
+catches) fails adv4 (6 of 10), losing 6 records to Clef-27B and gaining
+none (not significant after Holm). Tev1-0.8B and CLM score worse than
+never alerting (29 of 60). Figure 3 does not draw them.</p>
+<p>The Jev 1.14 reviewer alert depends on the route: on the preview
+cascade it catches 22 of 30 attacks (9/6/7 per set), one false alarm,
+failing adv4 (6 of 10; the 1.13 reviewer just reached 7, at 9/7/9); on
+the Oct 24 <code>jev-latest</code> cascade
+(<code>jev_1_14_cascade_raw</code>), 23 of 30 (9/7/7), one false alarm —
+the bar met. The preview loses three attacks to 1.13, wins none, not
+significant after Holm (p = 0.25; vs Clef-27B, 0.13). Reviewing
+Decider’s first pass: 23 of 30 (9/6/8), one false alarm.</p>
+<p>The most instructive detector should have been trivially safe: three
+hard regexes pre-registered against three scam families. On adv4, their
+validation set, they fired on 0 of 10 attacks and 3 of 10 honest
+messages — 7 of 20 correct, versus never alerting (10 of 20). The
+payment regex fired on three honest cases (D11, D12, D19); the other two
+never fired. The false positive Jev and Clef share is also instructive:
+case E11 describes a patient who <em>received</em> a scam text and asks
+about it — mentioning fraud does not make the sender a manipulator. The
+regexes stay documented as a pre-registered negative
+(<code>docs/experimentos/reglas_duras.md</code>,
+<code>docs/experimentos/alerta_manipulacion.md</code>).</p>
+<h2 id="the-stack-schema-thinking-option-order-and-repeatability">8. The
+stack: schema, thinking, option order and repeatability</h2>
+<p>The local 27B Qwen run with a forced schema scored −17.3* in
+probabilities mode (192/194 records, eight scored sets); its prompt
+omitted the question descriptions. A local FP8 (8-bit floating point)
+run without structured output scored 49.2. Cerebras served the same
+named model at 70.3; later local runs with visible questions scored 66.6
+and 67.2. Provider, backend, precision and prompt vary across these
+comparisons.</p>
+<p>Thinking — extended reasoning before the typed answer — was tested
+twice. Probability-mode thinking leaves both pre-registered gains
+inconclusive: +12.9 points in the d0 order and +9.3 in d1, with 97.5%
+intervals [−0.2; 30.9] and [0.5; 19.6] — a gain of at least 5 is
+inconclusive, not refuted. The discrete-minus-probabilities contrast
+(+16.6 [6.7; 29.1]) leaves its ≥10 hypothesis inconclusive as well.</p>
+<p>The later discrete-mode session, with fresh controls, rules out gains
+of at least five adjusted points in both option orders: −4.2 [−12.6;
+3.3] and −6.1 [−16.1; 2.5] at 98.75% confidence; it does not establish
+an exactly zero effect. The discrete-versus-probabilities contrast with
+thinking splits into +0.3 [−5.9; 6.3], inconclusive, and −8.8 [−19.2;
+−1.6], refuted. Figure 6 shows the contrasts and confidence levels.</p>
+<p>What thinking does cost is time: within each session it multiplied
+mean latency by roughly 6.8–7.1 in probabilities and 13.2–13.8 in
+discrete.</p>
+<p>Option order produced the bench’s sharpest single effect. In a frozen
+subset of 37 records where the correct department is never bronchoscopy,
+putting that option first moved department errors 9 → 22 — a 35.1-pp
+error swing, cluster interval [16.7; 52.8], McNemar over 35 grouped
+units b/c = 1/13, p = 0.0018, surviving a seven-test Holm at p = 0.007.
+Those are error pp in one subset of one model, not adjusted points, not
+a bench-wide law. A second pre-registered criterion of that session —
+the adjusted scores across the four orders spanning at most five points
+— inconclusive at the frozen v4 close, is refuted by the v5 replica
+(range 10.0, 95% CI [5.2; 18.4]). A gentler version appears in a
+text-diffusion model: rotating all choice options one position changed
+33 of 256 answers and cost it 5.9 accuracy points (Δ −5.9 [−10.4; −1.4])
+— descriptive (cross-host stability unconfirmed), not a clean causal
+isolation. The endpoint counterpart — refuted interval, non-significant
+McNemar (Holm p = 0.125) — is in §11.</p>
+<p>Microsoft-Decision-1 offers a second counterpoint on the same frozen
+subset and cyclic department rotation: errors went 10 → 10 — a 0.0-point
+difference, degenerate interval — so a primacy effect of at least five
+points is refuted in that subset, and only there. The rotation preserved
+158/158 unexposed paired decisions, as did the same-order replicate —
+compatible with, not establishing, the manufacturer’s broader invariance
+claim.</p>
+<p>Among the new dedicated deciders, the <code>department</code>
+rotation flags only Nimble-9B as sensitive (others change 6–17 answers):
+its agreement falls below the pre-registered stability threshold — 53 of
+964 paired answers changed, primacy-subset errors unchanged; Tev1, Drex,
+CLM and Strands stay stable or lack primacy evidence — though
+descriptively Tev1-0.8B and Strands lose 4–5 adjusted points under
+rotation — intervals excluding zero, no pre-registered threshold
+covering them. The same-order replicate is identical for Nimble, Tev1
+and Drex; CLM (6 of 964) and Strands (1 of 959) differ across sessions,
+cause unidentified.</p>
+<p>Jev is not deterministic: two identical Jev 1.14 calls through
+TypeSafe’s API agree on 955 of 964 paired decisions (99.1%, 95% CI
+[98.2; 99.6]; maximum Δp 0.12); the <code>department</code> rotation,
+951 (98.7% [97.7; 99.3]): 13 changes — similar to the 9 of call noise —
+not attributed to order by the pre-registered rule; primacy is refuted
+(14 errors in both orders). Jev 1.13, measured the same way on the same
+day and route, agrees on 957 of 964 in both tests (99.3%), with primacy
+inconclusive (one error flips each way). The pre-registered 1.13
+extension’s descriptive rule flags no difference between versions;
+interval overlap is neither a test of the repeatability difference nor
+evidence of equivalence. The two same-day first passes score 50.3 and
+50.3 (19 discordances favoring 1.13 and 15 favoring 1.14, Holm = 1).
+Across the eleven configurations with a full-battery replicate,
+agreement ranges from Haiku’s 95.3% to 100% for several local heads; the
+LLM/decider label does not separate the groups
+(<code>docs/experimentos/repetibilidad.md</code>).</p>
+<p>Do these models hallucinate? A typed decider cannot invent text: it
+picks among closed options; the closest analogue is a high-confidence
+answer the GT contradicts. In the October 17 descriptive analysis of
+saved outputs (<code>docs/experimentos/errores_seguros.md</code>, plan
+fixed before computing) we counted wrong yes/no answers emitted at
+confidence ≥0.9 across the 64 single-pass configurations with
+probabilities. In 37 of the 64 the rate stays at 0–3.7 such errors per
+100 binaries: 26 dedicated-decider configurations (Jev 1.13 and 1.14,
+Decider, Drex, Clef, Tev1, Kev, Nimble, Microsoft-Decision-1,
+Classify-1, Perplexity, Liquid, Mercury, Solar Decide Flash), but also
+well-configured generalists (Haiku 0.4–0.6, Cerebras-Qwen 1.2–1.4, sol
+2.5, the FP8 Qwen with thinking 2.3), plus CLM, GLiNER and Strands. Jev
+has 0.8, and only 7.4% of its errors are confident. Mercury and
+Perplexity, the most clear-cut, are wrong at confidence ≥0.99 on 0.4 and
+0.2 per 100: their extremes are usually right. The high figures come
+from misconfigured generalist runs —Qwen3.8-27B without visible
+questions, 21.3, with 97.3% of its errors confident, and 5.8 with the
+schema in the prompt—, AnyJev (13.8–19.1) and Julia-1, right only 32.2%
+of the time when confident. Two caveats: a low rate can mean almost
+never being confident (GLiNER and Strands decide at ≥0.9 on 0.8–1.2% of
+binaries), and <code>discrete</code> output makes every error confident
+(6.6–16.9 per 100). We have not tested differences, and this analysis
+does not say whether a model relies on the text or on what is typical —
+that requires new cases (questions the state cannot answer, evidence
+ablation), left for the holdout. In the §10 fine-tune, errors barely
+change (200 → 204 of 964 answers), but those at confidence ≥0.99 go from
+7 to 50: Brier rose from 0.083 to 0.108 while strict hits fell (764 →
+760).</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig6_effects.svg"><img src="figuras/en/fig6_effects.svg" alt="Figure 6 — Pre-registered contrasts and department primacy (error pp)" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+Paired adjusted deltas with cluster-bootstrap CIs (top) and bronchoscopy
+primacy in error pp (bottom); each row’s threshold is its pre-registered
+one. Scroll horizontally. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<h2 id="local-vs-api-and-cost">9. Local vs API and cost</h2>
+<p>The fully local Decider→Clef circuit scored 58.7; local
+DiffusionGemma scored 51.6–51.8. Across six local/OpenRouter pairs,
+agreement ranged from 96.2% to 99.9%. Out of 964 paired decisions per
+model, Clef-Flash agreed on 963, Clef on 958, elephant-1 on 957,
+mammoth-1 on 955, Drex v1.5 on 947 and Tev1-4B on 927. Only Tev1 fell
+below the descriptive 97% replicate reference (adjusted 27.0 locally and
+31.8 by API). No field survived Holm correction within any pair. These
+comparisons do not establish identical weights, quantization or serving
+software.</p>
+<p>On an 8 GB Jetson Orin Nano Super, Qwen3.5-4B Q4 and Decider-0.8B
+completed all 194 records, scoring 35 and 15 adjusted points (DGX
+controls 37 and 13; majority 0). Agreement with the controls was 92.1%
+and 99.5%, respectively; neither comparison had a significant field
+after Holm. Decider-2B completed 142 records. The tested Qwen3.5-9B
+configurations could not sustain the battery. Client-side median latency
+was about 3.5 s per record for Qwen and 0.8 s for Decider-0.8B,
+including the LAN hop.</p>
+<p>All costs are recorded spend per 1,000 records — stored costs over
+the record denominator — not today’s prices; no tariff certification.
+Selected circuits: Jev→Jev about $0.085; Microsoft-Decision-1 $0.0212;
+Cerebras-Qwen $2.02; the Haiku one-pass figure ($0.363) is a lower bound
+— one paid first response was lost between the API call and the
+save.</p>
+<figure class="fig-scroll" style="margin:1em 0;overflow-x:auto">
+<a href="figuras/en/fig5_cost_latency.svg"><img src="figuras/en/fig5_cost_latency.svg" alt="Figure 5 — Recorded cost and latency vs adjusted score" style="min-width:620px;max-width:100%;height:auto" loading="lazy"></a>
+<figcaption>
+Recorded API cost per 1,000 records (top) and median client ms per
+record (bottom) vs adjusted score; right lane = no recorded invoice.
+Scroll horizontally. GT v5 · data cut v2.10.0.
+</figcaption>
+</figure>
+<p>Latency (median ms per record over current IDs) is in the table: 638
+ms for Jev, 1,730 for Jev→Jev, 636 for Cerebras-Qwen, 693 for
+Microsoft-Decision-1 via OpenRouter — which does not validate the
+manufacturer’s speed claim — and 122–381 ms for the labeled local
+dedicated heads (2,636 ms for the local Qwen FP8). Client-side
+milliseconds include network and queueing, excluding model load — and,
+for every <code>jev</code>-adapter run (Jev, Microsoft-Decision-1, the
+OpenRouter deciders), a fixed 0.3 s inter-request pause, 3.5 s for the
+Base Labs <code>:free</code> pair; the <code>llm</code> adapter has
+none, so medians aren’t strictly comparable across adapters; local total
+operating cost was not measured. Denominators of every point — all 115 —
+are in <a
+href="figuras/en/fig5_datos.md"><code>fig5_datos.md</code></a>. Local
+elephant-1 and mammoth-1 had medians of 337 and 977 ms respectively
+across the 194 records.</p>
+<p><strong>Selected Figure 5 circuits.</strong> Quality coverage matches
+Figure 1; n records = current GT IDs (D1+reviewer pairs for cascades);
+cost is recorded API spend only — local operation is unpriced, not free.
+Median ms = per-record median over current GT IDs.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Horizontally scrollable table"><table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Quality coverage</th>
+<th>n records</th>
+<th style="text-align: right;">n known costs</th>
+<th style="text-align: right;">USD per 1,000</th>
+<th style="text-align: right;">n latencies</th>
+<th style="text-align: right;">Median ms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev (<code>jev_v3</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.0347</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">638</td>
+</tr>
+<tr>
+<td>Jev→Jev circuit (<code>jev_v3</code> +
+<code>jev_cascade_raw</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194 pairs</td>
+<td style="text-align: right;">194 pairs</td>
+<td style="text-align: right;">0.085 (D1 first pass 0.0347 + D2 second
+pass 0.0503)</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">1,730</td>
+</tr>
+<tr>
+<td>Decider→Jev circuit (<code>decider_4b</code> +
+<code>decider_4b_jevrev_raw</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194 pairs</td>
+<td style="text-align: right;">194 D2 API; D1 unpriced</td>
+<td style="text-align: right;">0.0503 API</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">1,152</td>
+</tr>
+<tr>
+<td>Jev→Haiku circuit (<code>jev_v3</code> +
+<code>jev_haiku55rev_raw</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194 pairs</td>
+<td style="text-align: right;">194 pairs</td>
+<td style="text-align: right;">0.6833</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">4,536</td>
+</tr>
+<tr>
+<td>Decider→Clef circuit (<code>decider_4b</code> +
+<code>decider_4b_clefrev_raw</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194 pairs</td>
+<td style="text-align: right;">0 external API</td>
+<td style="text-align: right;">0 API; total unknown</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">2,296</td>
+</tr>
+<tr>
+<td>Decider→Clef fusion (<code>decider_4b_clefrev_audit</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">194 fusion zeros</td>
+<td style="text-align: right;">0 external API</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Decider-4B (<code>decider_4b</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">not recorded</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr>
+<td>Haiku adapter, one pass (<code>llm_haiku55_adapt_prob</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">≥0.363 (lower bound)</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">2,655.5</td>
+</tr>
+<tr>
+<td>Cerebras-Qwen, no schema
+(<code>llm_cerebras_qwen38_27b_nostruct_prob</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">2.023579</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">636</td>
+</tr>
+<tr>
+<td>Microsoft-Decision-1 (<code>jev_ms_decision1</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.021242</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">693</td>
+</tr>
+<tr>
+<td>luna · Decisions (OpenRouter) (<code>jev_luna_decisions</code>)</td>
+<td>188/194, 6 sets*</td>
+<td>194</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">≥0.0999</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">675.5</td>
+</tr>
+<tr>
+<td>DiffusionGemma-26B, one read
+(<code>dgemma_26b_a4b_nvfp4_s1</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">not recorded</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">122</td>
+</tr>
+<tr>
+<td>Qwen3.8-27B FP8 — the run labelled “Qwen FP8” in the figure
+(<code>llm_qwen38_27b_fp8_jev71_off_d0_disc</code>)</td>
+<td>194/194, 10 sets</td>
+<td>194</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">not recorded</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">2,636</td>
+</tr>
+<tr>
+<td>Jev reviewer pass only (<code>jev_cascade_raw</code>)</td>
+<td>—</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.0503</td>
+<td style="text-align: right;">see circuit</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Jev reviewer over Decider only
+(<code>decider_4b_jevrev_raw</code>)</td>
+<td>—</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.0503</td>
+<td style="text-align: right;">see circuit</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Haiku reviewer over Jev only (<code>jev_haiku55rev_raw</code>)</td>
+<td>—</td>
+<td>194</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.6486</td>
+<td style="text-align: right;">see circuit</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>Majority baseline</td>
+<td>—</td>
+<td>194</td>
+<td style="text-align: right;">no API</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <code>n=56</code> in the figure’s right lane counts
+configurations without recorded API invoices, not records. The later
+control <code>llm_qwen38_27b_fp8_jev76_off_d0_disc</code> (67.2
+adjusted, median 2,707.5 ms over 194 IDs) is outside the web selection
+and is not drawn. The three generalists in probabilities mode in the
+table had higher observed aggregates and lower yes/no Brier scores than
+the dedicated runs shown. None had a significant field against Jev after
+Holm across its 53 tests. Deployment also depends on recorded cost,
+hardware and the interface. The adapter mode is chosen explicitly: luna
+scored Brier 0.044 when asked for probabilities and 0.066 when discrete
+answers were stored as 0/1.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Horizontally scrollable table"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Adjusted [95% CI]</th>
+<th>Brier noul</th>
+<th>Median ms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cerebras Qwen3.8-27B
+(<code>llm_cerebras_qwen38_27b_nostruct_prob</code>)</td>
+<td>70.3 [64.0; 76.7]</td>
+<td>0.044</td>
+<td>627</td>
+</tr>
+<tr>
+<td>gpt-6.1-sol low (<code>llm_gpt61sol_low_prob</code>)</td>
+<td>69.2 [61.9; 76.4]</td>
+<td>0.045</td>
+<td>3,415</td>
+</tr>
+<tr>
+<td>gpt-6-luna (<code>llm_gpt6luna_prob</code>)</td>
+<td>64.6 [57.6; 71.3]</td>
+<td>0.044</td>
+<td>3,027</td>
+</tr>
+<tr>
+<td>mammoth-1 (local) (<code>mammoth_1_local</code>)</td>
+<td>58.3 [50.5; 65.8]</td>
+<td>0.063</td>
+<td>974</td>
+</tr>
+<tr>
+<td>mammoth-1, 27B (OpenRouter) (<code>mammoth_1_or</code>)</td>
+<td>57.0 [49.4; 64.6]</td>
+<td>0.064</td>
+<td>4,114</td>
+</tr>
+<tr>
+<td>Clef-27B (<code>clef_27b</code>)</td>
+<td>55.8 [45.9; 64.7]</td>
+<td>0.052</td>
+<td>870</td>
+</tr>
+<tr>
+<td>elephant-1 (local) (<code>elephant_1_local</code>)</td>
+<td>53.6 [44.7; 62.4]</td>
+<td>0.069</td>
+<td>335</td>
+</tr>
+<tr>
+<td>Perplexity Decider V1.1 27B
+(<code>pplx_decider_v11_27b_or</code>)</td>
+<td>53.3 [43.4; 62.6]</td>
+<td>0.067</td>
+<td>997</td>
+</tr>
+<tr>
+<td>elephant-1 (OpenRouter) (<code>elephant_1_or</code>)</td>
+<td>52.3 [41.0; 62.7]</td>
+<td>0.067</td>
+<td>3,935</td>
+</tr>
+<tr>
+<td>Jev (<code>jev_v3</code>)</td>
+<td>49.3 [39.5; 58.6]</td>
+<td>0.062</td>
+<td>657</td>
+</tr>
+<tr>
+<td>Qwen3.5-9B base Tev1 (<code>qwen35_9b_base_tev1fmt</code>)</td>
+<td>48.2 [38.4; 57.4]</td>
+<td>0.083</td>
+<td>736</td>
+</tr>
+<tr>
+<td>Nimble-9B (<code>nimble_9b</code>)</td>
+<td>46.9 [36.6; 56.5]</td>
+<td>0.080</td>
+<td>1,620</td>
+</tr>
+<tr>
+<td><em>majority baseline</em></td>
+<td>0</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Median ms here follows the scorer’s summary convention (nine
+base+new phases, upper-middle element); the Figure 5 table uses the
+median over the 194 current IDs — hence 657 vs 638.</em></p>
+<h2 id="medical-specialization">10. Medical specialization</h2>
+<p>Does a medically tuned model decide better in a medical domain? One
+session compared MedGemma, Gemma 3 and a fresh Qwen control under one
+grammar — 18 cells × 194 records = 3,492, zero residual errors. MedGemma
+scored 23.7, Gemma 3 13.7, the fresh Qwen control 66.4 — all complete.
+MedGemma’s descriptive advantage over Gemma 3 is uncertain (+10.0 [−1.7;
+22.8], the ≥5 hypothesis inconclusive), while the pre-registered
+non-inferiority criterion against fresh Qwen is refuted (−42.7 [−55.6;
+−29.7] against a margin of −5). This does not isolate a causal
+specialization effect: the models differ in more than tuning, and the
+paired field tests show zero significant cells for both primary
+contrasts after Holm — though the separate 4B probability block contains
+surviving differences, its secondary family moving from one significant
+cell at the frozen v4 close to two under v5.</p>
+<p>Two operational findings matter more than the gap’s sign: 633 raw
+null probability vectors were returned — 600 by the 4B probability
+variant — and had to be normalized to uniform — an accounting fix, not
+informed calibration; routing MedGemma’s first pass through Jev’s
+reviewer lifts it to 66.5, a descriptive +42.8 (a hybrid circuit, not
+local), the largest gain in Figure 2.</p>
+<p>An experiment (Oct 18, 2026, pre-registered before training) asked
+the reverse question: does a decider improve if we tune it ourselves? We
+trained a LoRA on Qwen3.5-9B with synthetic ES/EN triage messages,
+PubMed papers and PMR-Bench (a non-commercial licence, so the weights
+are not released), with 0 overlaps detected by the 8-gram filter against
+the bench, and compared it with the same untuned base in Tev1’s format
+(one letter, first-token probabilities).</p>
+<p>That base already scores 48.2 [38.4; 57.4]
+(<code>qwen35_9b_base_tev1fmt</code>; majority 0), between Jev (49.3)
+and Nimble-9B (46.9), itself a LoRA on that base, with no significant
+difference from either after Holm; another model on that base,
+elephant-1 (§11), scores 52.3 through OpenRouter and 53.6 locally;
+neither comparison with the base has a significant field after Holm. The
+tuned model (<code>jev89_qwen35_9b_lora</code>) scores 37.8 [24.5;
+50.5]: H1 is refuted by the pre-registered criterion — its aggregate
+falls below the control’s — although none of the 53 cells survives Holm
+(90 hits only for the control, 86 only for the tuned). Per set it gains
+on triage, adv4 and adv5 and loses on papers, adv2 and adv3 — above all
+adv1 (adjusted 26.7 → −86.7 over 10 records), which alone accounts for
+the aggregate drop.</p>
+<p>What we measured is narrower than a format-versus-tuning comparison —
+we did not run the same base under a second format: with the Tev1 format
+fixed, the tuned model did not beat its control under the pre-registered
+criterion; a tuned decider compares with its own base in that format,
+not with zero. Our interpretation, untested and bounded mostly to adv1:
+the model learned what was in the data and unlearned what was missing;
+97.6% accuracy on synthetic validation anticipated nothing.</p>
+<h2 id="decision-endpoints">11. Decision endpoints</h2>
+<p>We also evaluated OpenAI’s gpt-6-luna through hosted “decisions”
+endpoints — via OpenRouter and the provider’s native API — producing the
+bench’s most distinctive failure mode, refusals. The OpenRouter endpoint
+scored 49.7* — 6 of 194 records came back rejected — leaving six scored
+sets. An offline fallback over the same raw outputs covers all 194
+records at 40.6 across ten sets; counting rejections as failures gives a
+stricter 34.65. What changed is coverage and failure mode: no fixed
+quality loss can be stated on homogeneous terms.</p>
+<p>Two acquisitions of the same endpoint agreed on all 934 shared
+answered questions — the same six rejections — at Δp = 0 on every common
+scalar component: measured agreement, no determinism guarantee. Whether
+both providers serve the same snapshot stays inconclusive across 188
+comparable pairs — same answers are not the same version.</p>
+<p>The provider’s native endpoint scored 39.8 with every record
+retained: eight question-level refusals across six records (six on
+department, two on urgency), each scored zero in its component; pairwise
+tests vs Jev show zero significant cells. Rotating option order at the
+endpoint moved primacy-subset errors 7→11 — a negative error difference
+(d0−d1) on the frozen subset; the pre-registered hypothesis is refuted
+because the interval’s upper bound falls below threshold, while the
+separate Holm-adjusted McNemar p = 0.125 is non-significant. The zero
+aggregate delta rests on five common scored sets: no proof of general
+insensitivity to order.</p>
+<p>Microsoft-Decision-1 adds a complete closed decision endpoint:
+OpenRouter serves the snapshot
+<code>microsoft/microsoft-decision-1-20261009</code>; its primary pass
+covers all 194 records with no refusals. Four smoke-exposed case IDs
+stay in descriptive reporting, excluded from confirmatory contrasts. Its
+profile is uneven, not uniformly strong — 10 of 31 on paper-depth, below
+the 14/31 majority oracle, and 25 of 31 on practice (majority 26): no
+winner on every question. All 53 pre-registered field tests against Jev
+returned Holm-adjusted p = 1, with a minimum nominal p of 0.0625: no
+demonstrated difference in either direction. The manufacturer’s wider
+announcements — 36 benchmarks, a 35-fold speed claim, safety figures —
+were not evaluated.</p>
+<p>On Oct 16, 2026 we added, pre-registered, thirteen deciders through
+OpenRouter’s Decisions API behind the same adapter: nine new — Drex
+v2.0, Classify-1 (ScaleDown), Perplexity Decider V1.1 27B, Clef Omni,
+Solar Decide and Solar Decide Flash (Upstage), Kev 4B, Liquid d1 and
+Mercury Decide (Inception) — and four already served locally (Drex v1.5,
+Tev1-4B, Clef, Clef-Flash; §9). All thirteen cover the 194 records
+without errors or refusals, one snapshot per run.</p>
+<p>They score from 30.7 (Kev 4B) to 54.1 (Clef); Perplexity Decider
+(53.3) and Mercury Decide (50.5) sit above Jev (49.3), but none of the
+thirteen has a cell surviving Holm in its 53 tests against Jev: no
+significant difference in either direction. Drex v2.0, a 35B
+mixture-of-experts with 3B active, scores 41.9 against 43.7 for the
+local v1.5, again no significant cell. Solar Decide takes a median 9.3 s
+per record against 0.5–1.0 s for the rest, yet bills the same as Flash
+(1.0 s). Mercury and Perplexity are the most categorical (51% and 49% of
+binaries outside 0.01–0.99; Jev 0.2%); Kev 4B is the flattest (55
+binaries in 0.45–0.55) and, with Liquid d1, falls below majority on
+adv4. Recorded cost runs from USD 0.0145 per 1,000 (Mercury) to 0.161
+(Solar), against Jev’s 0.0347.</p>
+<p>On Oct 22, 2026 we measured by the same route two more dedicated
+deciders in OpenRouter’s free variant: Base Labs’ mammoth-1 and
+elephant-1, MIT-licensed weights over Qwen3.5-27B and Qwen3.5-9B, both
+answering all 194 records without errors. mammoth-1 scores 57.0 [49.4;
+64.6] — the dedicated single-pass record on October 22; Clef-27B posts
+55.8 and, on strict per-field correctness wins more discordant cases
+against it (84 vs 56) — while elephant-1 scores 52.3 [41.0; 62.7],
+numerically above the untuned Qwen3.5-9B base it derives from (48.2,
+§10; 85 vs 59 discordant fields). Neither separates from Jev, that 9B
+base, Nimble-9B, our own LoRA, Clef-27B, Drex v1.5 or each other after
+Holm — no significant cell. Recorded cost is zero under the free variant
+— not a catalog price — and recorded medians include the adapter’s fixed
+inter-request pause (3.5 s on these <code>:free</code> runs; the
+<code>jev</code> default is 0.3 s). On October 25 both models completed
+the battery locally. Local mammoth-1 had the highest observed adjusted
+score among dedicated single passes (58.3; majority 0); local elephant-1
+scored 53.6. Neither had a significant field against its API counterpart
+or Jev after Holm.</p>
+<h2 id="negatives">12. Negatives</h2>
+<p>Negative results remain part of the evidence. Several contenders sit
+below the trivial line (majority 0): GLiNER variants from −2 to −45 on
+the scoreboard (complete coverage; the −45 multi-description run is not
+representative, yet a further multi/bare variant outside the scoreboard
+scores −49), CLM at −41.0, Julia (<code>julia_1</code>) at −89, and Laya
+at −22 / −26 in its two modes.</p>
+<p>The medical Ministral run keeps a documented stopping-rule deviation:
+probability mode reached −9.8* over three scored sets with 23 errors —
+past the pre-registered stop — while discrete scored 44.5* over four
+sets, a partial figure that does not stand next to Jev’s complete 49.3.
+Its probability-mode field tests now lose three cells to Jev, all
+significant after Holm — department on both extended triage sets and
+design on the paper set (adjusted p = 0.0129, 0.0498, 0.0254); the
+discrete variant shows nothing significant. Its checkpoint license and
+cost were never fully recorded.</p>
+<p>The weak reviewers — Decider self-review 39.2*, the AnyJev candidates
+38.9 and 27.7, Clef-Flash 48.2, gpt-6-luna 54.6 — the hard regexes of §7
+and the alert-less Span-01 main scores (18.5, 4.5, 19.1) stayed in the
+record for the same reason: the bench keeps what did not work,
+pre-registered or not. To these add the Decider-4B reviewers of Oct 14,
+2026 (Microsoft-Decision-1 64, Drex 52, Nimble 46), that date’s seven
+one-pass alerts and the preview Jev 1.14 reviewer alert, which fails
+adv4 (§6–§7). So does our own Qwen3.5-9B LoRA (§10), a pre-registered
+negative: 37.8 against 48.2 for its untuned base. Two historical
+negatives — a neutral vote-of-three and a Jev↔︎Laya gate that added
+nothing — sit under an older ground truth, not re-scored. Memory
+failures on the Jetson left Decider-2B with 12 errors among 154 saved
+records and two missing phases (§9); its partial score is unsuitable for
+a full-battery comparison.</p>
+<h2 id="method-and-operation">13. Method and operation</h2>
+<p>For pre-registered experiments we report criteria fixed before the
+relevant acquisition, amendments and stopping-rule deviations.
+Historical and exploratory analyses retain their original scope. The
+LoRA criterion (§10), for example, was fixed before training; adv1 (10
+cases) contributed the largest score drop. A lost paid Haiku response
+prompted a durable cost ledger (§9). Audits check declared metadata
+invariants and document exceptions.</p>
+<p>Confirmation is two-tiered. Repeatability: the Haiku adapter ran
+twice; the replicate agrees on 919 of 964 questions — 95.3% — and the
+adjusted aggregate moved 73.0 → 71.5, a paired −1.4 whose 95% interval
+spans zero [−4.7; 1.9]. That is “stable” by the pre-defined gates, not
+equivalent; the agreement interval treats questions as independent,
+proving no lower bound. The Microsoft replicate agreed on 959 of 964
+questions — 99.5% — with five changed decisions and a paired adjusted
+difference of −1.0: observed repeatability, not determinism; its
+documented procedural deviations (one capture per cell, not per retry
+block; nil impact). The Jev 1.14 and 1.13 replicates through TypeSafe
+(99.1% and 99.3%) read the same way: observed repeatability, not
+determinism.</p>
+<p>The public v2.11.0 snapshot contains the v2.10.0 data cut and twelve
+analyses frozen under GT v4. Seven re-execute on exported inputs; five
+are checked against attestations linking their frozen classifications to
+sanitized dependencies by hash. A pre-registered replica applied the
+original criteria under GT v5. All primary verdicts held. Two secondary
+findings changed: the d0–d3 range went from inconclusive to refuted, and
+the secondary 4B-probability Holm family went from one significant cell
+to two. All three Microsoft analyses reproduce their v4 outputs; in the
+v5 replica four cells of the 53-test family changed discordant counts
+and retained adjusted p = 1.</p>
+<h2 id="limitations">14. Limitations</h2>
+<p>This list bounds every number above. The 154 case units are not 154
+independent observations — translations are paired by construction,
+papers may share identifiers, and the official bootstrap does not
+cluster them. The bank is small and narrow-domain; the configuration set
+was historically selected and guided by observed errors; the triage
+cases are synthetic; and the ground truth is LLM-assisted with local
+conventions — human review was partial and dispute-selected (166
+distinct fields in two stages), so no global double human annotation
+exists. Paired McNemar over 53 fields validates neither causality nor
+equivalence; margins were pre-registered and reported as such. Alert
+families run on ten attacks and ten honest messages per set, so few
+positives separate detectors. Same-date repeatability is no holdout;
+training-contamination absence was not certified. Microsoft’s endpoint
+order sensitivity rests on one cyclic rotation of one field on one
+frozen subset — not global invariance — and its per-question agreement
+treats a record’s questions as independent. The public mirror omits full
+abstracts — third-party rights do not transfer under the project’s CC BY
+licence, and no legal audit was performed. Jev 1.14 was measured on two
+days, two routes — TypeSafe preview (Oct 15), <code>jev-latest</code>
+over OpenRouter (Oct 24); the preview comparison with
+<code>jev_v3</code> mixes version, route and date, the
+<code>jev-latest</code> one version and date; only the same-day
+comparison with 1.13 holds route and date constant while varying
+version. Each API configuration was acquired once in the October 16 and
+October 22 campaigns, with client-side latency; six models also have a
+local comparison. The Jetson results apply to one device and the tested
+runtimes and precisions. The verifier used ten fictional scripts. Among
+the API runs, the Clef and Clef-Flash snapshots carry no date, so a new
+measurement cannot guarantee the same version. Our LoRA was trained and
+evaluated once, with no blind real-world set to validate it.
+Generalization requires a new frozen holdout with independent human
+annotation.</p>
+<p><em>AI use.</em> AI systems assisted in drafting synthetic cases and
+initial ground-truth labels, implementing and reviewing code, analyzing
+results, and preparing and reviewing the manuscript. Human second
+annotation covered 78 disputed fields in September and 88 more reviewed
+and adjudicated by the author in October — 166 distinct fields in total.
+The adv5 labels were validated by Claude by delegation. Human
+adjudication and the provenance of ground-truth changes are documented.
+The human author is responsible for the evidence and the final text.
+This benchmark is not clinical validation.</p>
+<h2 id="what-the-bench-would-recommend">15. What the bench would
+recommend</h2>
+<p>The recorded operating recommendation stays conditional on alert
+requirements, coverage and deployment constraints; the highest aggregate
+alone does not settle it. The documented circuit is Jev 1.13’s first
+pass reviewed by Jev 1.13 under the audit rule, the manipulation alert
+surfacing cases for human review — about $0.085 per 1,000 records in
+recorded terms. Decider→Jev is the hybrid alternative when the first
+pass should be local and cheap; Decider→Clef the all-local candidate
+that met criterion A — under the previous ground truth and again under
+v5; a visible-schema 27B Qwen in discrete mode with thinking off is the
+single-pass local comparison point; Jev→Haiku holds the highest complete
+audit aggregate while failing the expanded criterion B on the middle
+adversarial set — a trade-off, not a promotion. Later measured as a
+Decider-4B reviewer and a one-pass alert, Microsoft-Decision-1 misses
+both bars, as a reviewer by one false alarm; the recommendation stands.
+Jev 1.14 does not change it either: with no significant difference from
+1.13, it qualifies as a Decider-4B reviewer, and its review alert fails
+adv4 on the preview route while meeting the bar exactly on the
+<code>jev-latest</code> route; 1.13 remains the reference, as
+pre-registration fixed; the Base Labs route comparisons and Jetson
+trials did not test reviewer eligibility. None of this is a clinical
+recommendation or a universal pick: price, persistence guarantees, model
+roles, coverage and alert requirements weigh as much as the descriptive
+aggregate.</p>
+<h2 id="reproduce-it">16. Reproduce it</h2>
+<p>Use the <a
+href="https://github.com/Mindbreaker81/system-one-bench-public/tree/v2.11.0">public
+v2.11.0 snapshot</a> to rescore the v2.10.0 data cut under GT v5. The
+reporting manifest (<code>docs/resultados_runs.txt</code>) lists 124
+entries. The cut includes the October 25 local Base Labs and Jetson
+trials and the separate BroncoScribe task. Code is MIT-licensed; cases,
+ground truth and results are licensed under CC BY 4.0. Paper abstracts
+can be reconstructed from PubMed and verified by hash. The last alias
+check in the cut, on October 24, resolved Jev to
+typesafe/jev-1.14-20261014 through OpenRouter and jev-1.14.0 through
+TypeSafe. To reproduce the historical reference, pin
+typesafe/jev-1.13-20260917. Use <code>JEVBENCH_GT=v4</code> for the
+frozen historical closes.</p>
+<p>From the public v2.11.0 snapshot, run:</p>
+<pre class="bash"><code>python3 -m jevbench.score jev_v3 jev_cascade_audit jev_haiku55rev_audit jev_ms_decision1 --summary --adj-ci
+python3 -m jevbench.attest verify</code></pre>
+<p>Scores can be recomputed from saved sanitized outputs;
+<code>attest verify</code> verifies the cut without replaying private
+raw evidence or re-running paid APIs. The bilingual public site carries
+a per-configuration profile — <code>modelo.html#jev_ms_decision1</code>
+/ <code>en/model.html#jev_ms_decision1</code> — linking saved score,
+coverage, calibration, recorded cost and latency, resolved version and
+run manifest: an inspection view, not independent validation. The figure
+generator is maintained in the private repository. The AI-use statement
+in §14 applies to this text.</p>
+
+</article>
+<footer class="site"><div>system-one-bench · v2.11.0 · <a href="https://github.com/Mindbreaker81/system-one-bench-public" rel="noopener">code and data (MIT / CC BY 4.0)</a>. Not a clinical tool.</div></footer>
+</main>
+</body>
+</html>
