@@ -34,7 +34,7 @@
     <a href="https://system-one-bench.netlify.app/index.html">Resumen</a><a href="https://system-one-bench.netlify.app/modelo.html">Ficha</a><a href="https://system-one-bench.netlify.app/casos.html">Casos</a><a href="https://system-one-bench.netlify.app/preguntas.html">Por pregunta</a><a href="https://system-one-bench.netlify.app/comparar.html">Comparar</a><a href="https://system-one-bench.netlify.app/revisor.html">Revisor</a><a href="https://system-one-bench.netlify.app/experimentos.html">Experimentos</a><a href="https://system-one-bench.netlify.app/limites.html">Límites</a><a href="https://system-one-bench.netlify.app/coste.html">Coste</a><a href="https://system-one-bench.netlify.app/metodologia.html">Metodología</a><a href="https://system-one-bench.netlify.app/articulo/" aria-current="page">Artículo</a><a href="https://github.com/Mindbreaker81/system-one-bench-public" rel="noopener">GitHub</a>
   </nav>
   <span class="langsw" aria-label="Idioma / Language"><span class="on">ES</span>·<a href="https://system-one-bench.netlify.app/article/" hreflang="en">EN</a></span>
-  <span class="ver" title="Versión del banco de pruebas">v2.11.0</span>
+  <span class="ver" title="Versión del banco de pruebas">v2.11.1</span>
 </div></header>
 <script>(function(){var p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".sitebar nav a").forEach(function(a){if(a.getAttribute("href")===p)a.setAttribute("aria-current","page")})})();</script>
 
@@ -45,14 +45,28 @@ id="evaluar-decisiones-tipadas-pasadas-de-revisión-visibilidad-del-esquema-y-se
 decisiones tipadas: pasadas de revisión, visibilidad del esquema y
 sensibilidad a la configuración en un banco bilingüe de dominio
 estrecho</h1>
-<p><em>Versión 2.11.0 · corte de datos v2.10.0 (tag v2.10.0) · ground
+<p><em>Versión 2.11.1 · corte de datos v2.10.0 (tag v2.10.0) · ground
 truth v5</em></p>
+<p><strong>Edmundo Rosales-Mayor</strong> · Hospital Sanitas CIMA,
+Barcelona, España · ORCID <a
+href="https://orcid.org/0000-0001-9493-1241">0000-0001-9493-1241</a></p>
 <h2 id="resumen">0. Resumen</h2>
-<p>Jev obtuvo 49,3 puntos ajustados en una pasada. En dos pasadas,
-Jev→Jev y Jev→Haiku obtuvieron 67,6 y 77,6 con la regla audit (§6). La
-escala mide el margen sobre la mayoría (0), con 100 para decisiones
-perfectas. Las tres puntuaciones subieron al repuntuar las mismas
-predicciones con el GT v5.</p>
+<p>Este artículo evalúa <em>decisiones tipadas</em>: un modelo recibe un
+texto y preguntas cerradas —elegir entre opciones, valorar un nivel
+ordinal o dar la probabilidad de un sí— y devuelve una probabilidad para
+cada respuesta posible. La referencia es Jev (TypeSafe AI), una API
+cerrada diseñada para este contrato. Frente a ella medimos decisores
+abiertos y comerciales y LLM generalistas sobre los mismos 194 casos en
+español e inglés de una unidad sintética de neumología intervencionista
+—triaje de mensajes de pacientes, lectura crítica de artículos de PubMed
+y mensajes manipulados—, con el mismo ground truth (GT) y el mismo
+scorer. Las puntuaciones son ajustadas: 0 es la línea base de mayoría y
+100, decisiones perfectas.</p>
+<p>Jev obtuvo 49,3 puntos ajustados en una pasada, decidiendo cada caso
+por sí solo. Con una segunda pasada en la que un modelo revisor
+comprueba la primera decisión, Jev→Jev y Jev→Haiku obtuvieron 67,6 y
+77,6 con la regla audit (§6). Las tres puntuaciones subieron al
+repuntuar las mismas predicciones con el GT v5.</p>
 <p>Detrás de esas cifras hay una conclusión acotada: varias
 configuraciones de revisión mejoran el agregado descriptivo, algunos
 efectos del stack de inferencia (el software y el hardware que sirven el
@@ -1680,7 +1694,7 @@ procedimentales documentadas (una captura por celda, no por bloque de
 reintentos; impacto nulo). Las réplicas de Jev 1.14 y 1.13 por TypeSafe
 (99,1 % y 99,3 %) se leen igual: repetibilidad observada, no
 determinismo.</p>
-<p>El snapshot público v2.11.0 contiene el corte de datos v2.10.0 y doce
+<p>El snapshot público v2.11.1 contiene el corte de datos v2.10.0 y doce
 análisis congelados bajo GT v4. Siete se reejecutan con las entradas
 exportadas; cinco se verifican mediante atestaciones que vinculan por
 hash sus clasificaciones congeladas a dependencias saneadas. Una réplica
@@ -1731,13 +1745,15 @@ independiente.</p>
 <p><em>Uso de IA.</em> Se utilizaron sistemas de IA en la redacción de
 casos sintéticos y etiquetas iniciales de GT, en la implementación y
 revisión del código, en el análisis de resultados y en la preparación y
-revisión del manuscrito. La segunda anotación humana cubrió 78 campos en
-disputa en septiembre y 88 más revisados y adjudicados por el autor en
-octubre —166 campos distintos en total—. Las etiquetas de adv5 fueron
-validadas por Claude por delegación. La adjudicación humana y la
-procedencia de cambios de GT están documentadas. El autor humano es
-responsable de verificar la evidencia y el texto final. Este banco no
-constituye validación clínica.</p>
+revisión del manuscrito: Claude Code (Anthropic) como agente principal,
+con Codex y Devin, bajo la dirección y revisión del autor. La segunda
+anotación humana cubrió 78 campos en disputa en septiembre y 88 más
+revisados y adjudicados por el autor en octubre —166 campos distintos en
+total—. Las etiquetas de adv5 fueron validadas por Claude por
+delegación. La adjudicación humana y la procedencia de cambios de GT
+están documentadas. El autor humano es responsable de verificar la
+evidencia y el texto final. Este banco no constituye validación
+clínica.</p>
 <h2 id="qué-recomendaría-el-banco">15. Qué recomendaría el banco</h2>
 <p>La recomendación operativa documentada depende de los requisitos de
 alerta, de la cobertura y de las condiciones de despliegue; el mayor
@@ -1766,8 +1782,8 @@ persistencia, los roles de los modelos, la cobertura y los requisitos de
 alerta pesan tanto como el agregado descriptivo.</p>
 <h2 id="reproducirlo">16. Reproducirlo</h2>
 <p>Usa el <a
-href="https://github.com/Mindbreaker81/system-one-bench-public/tree/v2.11.0">snapshot
-público v2.11.0</a> para repuntuar el corte de datos v2.10.0 bajo GT v5.
+href="https://github.com/Mindbreaker81/system-one-bench-public/tree/v2.11.1">snapshot
+público v2.11.1</a> para repuntuar el corte de datos v2.10.0 bajo GT v5.
 El manifiesto del marcador (<code>docs/resultados_runs.txt</code>)
 recoge 124 entradas. El corte incluye las pruebas locales de Base Labs y
 de Jetson del 25 de octubre y la tarea independiente de BroncoScribe. El
@@ -1778,7 +1794,7 @@ corte, el 24 de octubre, resolvió Jev a typesafe/jev-1.14-20261014 por
 OpenRouter y a jev-1.14.0 por TypeSafe. Para reproducir la referencia
 histórica, fija typesafe/jev-1.13-20260917. Usa
 <code>JEVBENCH_GT=v4</code> para los cierres históricos congelados.</p>
-<p>Desde el snapshot público v2.11.0, ejecuta:</p>
+<p>Desde el snapshot público v2.11.1, ejecuta:</p>
 <pre class="bash"><code>python3 -m jevbench.score jev_v3 jev_cascade_audit jev_haiku55rev_audit jev_ms_decision1 --summary --adj-ci
 python3 -m jevbench.attest verify</code></pre>
 <p>Las puntuaciones pueden recalcularse desde salidas guardadas
@@ -1794,7 +1810,7 @@ repositorio privado. La declaración de uso de IA de la §14 se aplica
 también a este texto.</p>
 
 </article>
-<footer class="site"><div>system-one-bench · v2.11.0 · <a href="https://github.com/Mindbreaker81/system-one-bench-public" rel="noopener">código y datos (MIT / CC BY 4.0)</a>. No es una herramienta clínica.</div></footer>
+<footer class="site"><div>system-one-bench · v2.11.1 · <a href="https://github.com/Mindbreaker81/system-one-bench-public" rel="noopener">código y datos (MIT / CC BY 4.0)</a>. No es una herramienta clínica.</div></footer>
 </main>
 </body>
 </html>
