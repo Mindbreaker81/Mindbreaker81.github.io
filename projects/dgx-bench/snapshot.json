@@ -4,9 +4,9 @@
   "source_repository": "dgx-bench",
   "source_file": "benchmark/index.html",
   "source_checkout_commit": "b795123352b3c8727795d9e996a2b999f4b73bfb",
-  "source_html_sha256": "cc9934143da283c01e2d45c6d8d6f5477a883f9cf584cc060bb15a935173365c",
-  "public_html_sha256": "32d4825198da496f5361bdb63a9dba460211bff5f2c897ea6d9818219c53ed44",
+  "source_html_sha256": "9f60ee8e2476f67de82cd87dc59aed0ba412cf55ec5ed8c515f2310882e66d34",
+  "public_html_sha256": "1a6611a029956835f4861dbc72571504a93139b791879f0c0987ff462dc7c793",
   "exporter_sha256": "a85db359120a050e9a872e86628a421ecdf38afce1638ff80be30f7c7ceff0f4",
-  "exported_utc": "2026-11-22T19:38:54.841361+00:00",
+  "exported_utc": "2026-11-22T20:19:48.043977+00:00",
   "note": "Instantánea estática del informe revisado; la fecha de los datos figura en el HTML."
 }
