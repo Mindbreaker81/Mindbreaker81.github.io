@@ -3,10 +3,10 @@
   "url": "https://mindbreaker81.github.io/projects/dgx-bench/",
   "source_repository": "dgx-bench",
   "source_file": "benchmark/index.html",
-  "source_checkout_commit": "99af95f30e0d7c4deb20c41f7c3c942860f709d3",
-  "source_html_sha256": "09a42090105f9872680dcbdb34b65bcb07ad48bb15d17699180b0ae858bd5203",
-  "public_html_sha256": "d67b5b325b2266cd4f5536e8c894b3c8820a8d3dba79a00bf7546144f1a6d303",
+  "source_checkout_commit": "6175f5f1c516bb131a6a57e4ce3ee0f4d4a359e0",
+  "source_html_sha256": "0dd548a97883d3b24e90fe4e754d4c1fe4bad36b37d0b2fc3b11d51f769a300f",
+  "public_html_sha256": "7990d991c45a5493117e97ecb14bd05394a0ded1cce5a3c6aec64dacda740244",
   "exporter_sha256": "a85db359120a050e9a872e86628a421ecdf38afce1638ff80be30f7c7ceff0f4",
-  "exported_utc": "2026-11-26T20:20:18.305316+00:00",
+  "exported_utc": "2026-11-26T22:01:49.087502+00:00",
   "note": "Instantánea estática del informe revisado; la fecha de los datos figura en el HTML."
 }
